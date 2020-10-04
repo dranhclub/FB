@@ -11,6 +11,10 @@ Xem hướng dẫn cài đặt theo mục `React Native CLI Quickstart` (không 
 
 ## Cách chạy ứng dụng:
 1. Clone project về
-2. Mở cmd, cd tới thư mục project, chạy lệnh `npm install`
+2. Mở `cmd`, cd tới thư mục project, chạy lệnh `npm install`.
+
+    Đôi khi cài đặt bị lỗi vì không đủ quyền truy cập. Khi đó chạy `PowerShell` với quyền admin thay vì `cmd`
+
 3. Sau đó chạy lệnh `npx react-native run-android` 
-Nếu đã cài android studio và set-up máy ảo rồi, thì chỉ cần chạy lệnh trên, máy ảo và metro server sẽ tự động bật lên và khởi động ứng dụng. Nếu muốn chạy trên thiết bị điện thoại, kết nối điện thoại vào và bật chế độ USB-debugging trên điện thoại lên, sau đó chạy lệnh trên.
+
+    Nếu đã cài android studio và set-up máy ảo rồi, thì chỉ cần chạy lệnh trên, máy ảo và metro server sẽ tự động bật lên và khởi động ứng dụng. Nếu muốn chạy trên thiết bị điện thoại, kết nối điện thoại vào và bật chế độ USB-debugging trên điện thoại lên, sau đó chạy lệnh trên.
