@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
-import Home from './src/screens/Home';
+import Home from './src/Home';
 
 export const AuthContext = React.createContext();
 
@@ -104,38 +104,27 @@ export default function App({ navigation }) {
           ) : state.userToken == null ? (
             // No token found, user isn't signed in\
             <>
-                <Stack.Screen
-                  name="LoginScreen"
-                  component={LoginScreen}
-                  options={{
-                    title: 'Login',
-                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                  }}
-                />
-                <Stack.Screen
-                  name="RegisterScreen"
-                  component={RegisterScreen}
-                  options={{title: 'Register'}}
-                />
+              <Stack.Screen
+                name="LoginScreen"
+                component={LoginScreen}
+                options={{
+                  title: 'Login',
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen
+                name="RegisterScreen"
+                component={RegisterScreen}
+                options={{ title: 'Register' }}
+              />
             </>
           ) : (
-            // User is signed in
-            <>
-              <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-              <Stack.Screen 
-              name="PostScreen" component={PostScreen} 
-              options={{
-                title: 'Tạo bài viết',
-                headerRight: () => (
-                  <Button
-                    onPress={() => alert('This is a button!')}
-                    title="Đăng"
-                  />
-                ),
-              }
-              }/>
-            </>
-          )}
+                // User is signed in
+                <>
+                  <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+                  <Stack.Screen name="PostScreen" component={PostScreen}/>
+                </>
+              )}
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
