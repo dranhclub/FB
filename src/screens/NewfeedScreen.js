@@ -51,18 +51,20 @@ export default function NewfeedScreen({ navigation }) {
       <Post
         displayName='Anh Hoàng'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
-        key='postId'
+        key='postId1'
         time='Vừa xong'
         images={exampleImages}
+        navigation={navigation}
       />
 
 
       <Post
         displayName='Anh Hoàng'
-        text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
-        key='postId'
+        text='😀😂😂😊🤣❤😍😒👌😘'
+        key='postId2'
         time='Vừa xong'
         images={exampleImages}
+        navigation={navigation}
       />
 
 

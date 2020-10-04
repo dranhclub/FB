@@ -1,12 +1,12 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-
+import React, { useState } from 'react';
+import { Button, Text, View } from 'react-native';
 
 export default function NotificationScreen() {
-  return (
+  return(
     <View>
-      <Text>NotificationScreenn</Text>
+      <Text>
+        nofitication
+      </Text>
     </View>
   );
 }

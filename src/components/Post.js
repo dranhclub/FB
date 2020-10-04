@@ -1,17 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, Button, StyleSheet, Image } from 'react-native';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagesGridView from './ImagesGridView';
 
-export default function Post({ displayName, time, text, images }) {
+export default function Post({ displayName, time, text, images, navigation }) {
 
-  const exampleImages = [
-    require('../imgs/example.jpg'),
-    require('../imgs/example.jpg'),
-    require('../imgs/example.jpg'),
-    require('../imgs/example.jpg')
-  ];
+  const [liked, setLiked] = useState(false)
 
   return (
     <View style={styles.post}>
@@ -37,14 +32,24 @@ export default function Post({ displayName, time, text, images }) {
 
       <View style={styles.actions}>
         <View style={styles.action}>
-          <TouchableOpacity >
-            <Text>
-              <FontAwesome5 name={'thumbs-up'} size={20} /> Thích
-              </Text>
+          <TouchableOpacity onPress={() => {
+            setLiked(!liked);
+          }}>
+            {
+              liked ? (
+                <Text style={{ color: '#3b5998' }}>
+                  <FontAwesome5 name={'thumbs-up'} size={20} color={'#3b5998'} solid={true} />  Thích
+                </Text>
+              ) : (
+                  <Text style={{color: 'black'}}>
+                    <FontAwesome5 name={'thumbs-up'} size={20} color={'black'}/>  Thích
+                  </Text>
+                )
+            }
           </TouchableOpacity>
         </View>
         <View style={styles.action}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('CommentScreen')} >
             <Text>
               <FontAwesome5 name={'comment'} size={20} /> Bình luận
               </Text>

@@ -6,8 +6,8 @@ import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
 import Home from './src/Home';
+import AuthContext from './src/contexts/AuthContext'
 
-export const AuthContext = React.createContext();
 
 function SplashScreen() {
   return (

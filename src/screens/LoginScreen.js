@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Text, TextInput, View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native'
 import Image from 'react-native-scalable-image';
-import {AuthContext} from '../../App'
+import AuthContext from '../contexts/AuthContext'
 
 export default function LoginScreen ({navigation}) {
   const [username, setUsername] = React.useState('');

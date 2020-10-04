@@ -10,9 +10,9 @@ export default function ImagesGridView ({images}) {
   
   return(
     <View style={styles.container}>
-      {images.map((img)=>{
+      {images.map((img, index)=>{
         return(
-          <Image source={img} style={styles.image}/>
+          <Image source={img} style={styles.image} key={index}/>
         )
       })}
     </View>
