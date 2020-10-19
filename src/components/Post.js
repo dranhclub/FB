@@ -26,7 +26,9 @@ export default function Post({ displayName, time, text, images, navigation }) {
       </View>
       <View style={styles.body}>
         <Text>{text}</Text>
-        <ImagesGridView images={images} />
+        {
+          images ? (<ImagesGridView images={images} />) : (<></>)
+        }
         
       </View>
 

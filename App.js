@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
+import { AsyncStorage } from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/screens/LoginScreen';
@@ -7,7 +8,7 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
 import Home from './src/Home';
 import AuthContext from './src/contexts/AuthContext'
-
+import axios from 'axios';
 
 function SplashScreen() {
   return (
@@ -78,7 +79,19 @@ export default function App({ navigation }) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-
+        console.log(data);
+        axios.get('http://10.0.2.2:3000/users', {
+          params: {
+            phonenumber: data.phonenumber,
+            password: data.password
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),

@@ -5,6 +5,7 @@ import NewfeedScreen from './screens/NewfeedScreen';
 import NotificationScreen from './screens/NotificationScreen'
 import MenuScreen from './screens/MenuScreen'
 import CommentScreen from './screens/CommentScreen'
+import ProfileScreen from './screens/ProfileScreen'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {createStackNavigator} from '@react-navigation/stack'
 const Tab = createMaterialTopTabNavigator();
@@ -32,6 +33,12 @@ export default function Home() {
         options={{
           tabBarIcon: (tabInfo) => (
             <FontAwesome5 name='newspaper' size={20}/>
+          ),
+        }} />
+      <Tab.Screen name="ProfileScreen" component={ProfileScreen}
+        options={{
+          tabBarIcon: (tabInfo) => (
+            <FontAwesome5 name='user-circle' size={20} />
           ),
         }} />
       <Tab.Screen name="NotificationScreen" component={NotificationScreen}
