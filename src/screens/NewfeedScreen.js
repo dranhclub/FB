@@ -47,7 +47,7 @@ export default function NewfeedScreen({ navigation }) {
         </View>
       </View>
 
-
+      {/* Posts list */}
       <Post
         displayName='Anh Hoàng'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
@@ -56,8 +56,6 @@ export default function NewfeedScreen({ navigation }) {
         images={exampleImages}
         navigation={navigation}
       />
-
-
       <Post
         displayName='Anh Hoàng'
         text='😀😂😂😊🤣❤😍😒👌😘'
@@ -66,14 +64,6 @@ export default function NewfeedScreen({ navigation }) {
         images={exampleImages}
         navigation={navigation}
       />
-
-
-      <View style={styles.post}>
-
-      </View>
-      <View style={styles.post}>
-
-      </View>
     </ScrollView>
   );
 }

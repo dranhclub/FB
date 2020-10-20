@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import RoundedButton from '../components/RoundedButton';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Post from '../components/Post';
@@ -90,10 +90,6 @@ export default function ProfileScreen({navigation}) {
             <Text style={{marginLeft: 10}}>Độc thân</Text>
           </View>
           <View style={styles.infoItem}>
-            <FontAwesome5 name='heart' size={20} color='#777' solid/>
-            <Text style={{marginLeft: 10}}>Độc thân</Text>
-          </View>
-          <View style={styles.infoItem}>
             <FontAwesome5 name='ellipsis-h' size={20} color='#777'/>
             <Text style={{marginLeft: 10}}>Xem thông tin giới thiệu của Trang Nguyen</Text>
           </View>
@@ -123,16 +119,18 @@ export default function ProfileScreen({navigation}) {
           <Text style={{fontSize: 20}}>272 (81 bạn chung)</Text>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}> 
           {
-            typicalFriends.map((friend, index)=>{
+            typicalFriends.map((item, index)=>{
               const imgStyle = {width: '31%', marginBottom: 20};
               if (index % 3 == 1) {
                 imgStyle['marginHorizontal'] = 10;
               }
               return(
-                <View style={imgStyle} key={friend.id}>
-                  <Image source={friend.avatar} style={styles.friendAvatar} />
-                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{friend.name}</Text>
-                </View>
+                <TouchableOpacity containerStyle={imgStyle} key={item.id} onPress={()=>alert('goto friend profile')}>
+                  <View>
+                    <Image source={item.avatar} style={styles.friendAvatar} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.name}</Text>
+                  </View>
+                </TouchableOpacity>
               )
             })
           }

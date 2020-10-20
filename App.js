@@ -9,6 +9,7 @@ import PostScreen from './src/screens/PostScreen';
 import Home from './src/Home';
 import AuthContext from './src/contexts/AuthContext'
 import axios from 'axios';
+import CommentScreen from './src/screens/CommentScreen';
 
 function SplashScreen() {
   return (
@@ -80,18 +81,18 @@ export default function App({ navigation }) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log(data);
-        axios.get('http://10.0.2.2:3000/users', {
-          params: {
-            phonenumber: data.phonenumber,
-            password: data.password
-          }
-        })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        // axios.get('http://10.0.2.2:3000/users', {
+        //   params: {
+        //     phonenumber: data.phonenumber,
+        //     password: data.password
+        //   }
+        // })
+        // .then(function (response) {
+        //   console.log(response.data);
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
@@ -136,6 +137,7 @@ export default function App({ navigation }) {
                 <>
                   <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                   <Stack.Screen name="PostScreen" component={PostScreen}/>
+                  <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
                 </>
               )}
         </Stack.Navigator>
