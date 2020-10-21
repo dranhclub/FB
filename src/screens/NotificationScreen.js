@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Button, Text, View,Image } from 'react-native';
-import { ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { Button, Text, View,Image,TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import RoundedButton from '../components/RoundedButton';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function NotificationScreen() {
@@ -66,7 +65,11 @@ export default function NotificationScreen() {
       {/* Header */}
       <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10}}>
         <Text style={{fontSize: 25, fontWeight: 'bold'}}>Thông báo</Text>
-        <RoundedButton content={<FontAwesome5 name='search' size={25}/>} color={'#777'} backgroundColor={'#ccc'} borderRadius={20}/>
+        <TouchableOpacity onPress={()=>alert("deleted")}>
+          <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+            <FontAwesome5 size={22} name='search'/>
+          </View>
+        </TouchableOpacity>
       </View>
 
       {/* Notification items */}
@@ -76,14 +79,39 @@ export default function NotificationScreen() {
           if (!item.read) {
             viewStyle['backgroundColor'] = '#E3F2FD'
           }
+          var typeIcon = null;
+          switch (item.type) {
+            case 'comment':
+              typeIcon = (
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: -26 }}>
+                  <View style={{ backgroundColor: '#7CB342', width: 30, height: 30, borderRadius: 25, alignItems: 'center', justifyContent: 'center' }}>
+                    <FontAwesome5 name={'comment-alt'} color={'white'} solid />
+                  </View>
+                </View>
+                );
+                break;
+            case 'like': 
+            typeIcon = (
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: -26 }}>
+                <View style={{ backgroundColor: '#0091EA', width: 30, height: 30, borderRadius: 25, alignItems: 'center', justifyContent: 'center' }}>
+                  <FontAwesome5 name={'thumbs-up'} color={'white'} solid />
+                </View>
+              </View>
+              );
+              break;
+          }
+          
           return (
             <View key={index} style={viewStyle}>
-              <TouchableOpacity containerStyle={{flex: 1}} onPress={()=>alert('goto post')}>
-                <View style={{flexDirection: 'row'}}>
-                  <Image source={item.image} style={{ width: 70, height: 70, borderRadius: 60 }} />
+              <TouchableOpacity style={{flex: 1}} onPress={()=>alert('goto post')}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View>
+                    <Image source={item.image} style={{ width: 70, height: 70, borderRadius: 60 }} />
+                    {typeIcon}
+                  </View>
                   <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                    <Text style={{ fontSize: 18 }}>{item.content}</Text>
-                    <Text style={{ fontSize: 15, color: '#777' }}>{item.time}</Text>
+                    <Text style={{ fontSize: 16 }}>{item.content}</Text>
+                    <Text style={{ fontSize: 14, color: '#777' }}>{item.time}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -96,6 +124,7 @@ export default function NotificationScreen() {
       }
       {/* Options - bottom sheet */}
       <RBSheet
+        height={200}
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={true}
@@ -108,7 +137,14 @@ export default function NotificationScreen() {
           }
         }}
       >
-        <Button title={'Xoá thông báo này'} onPress={()=>alert("deleted")}/>
+        <TouchableOpacity onPress={()=>alert("deleted")}>
+          <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+              <FontAwesome5 size={22} name='trash-alt'/>
+            </View>
+            <Text style={{fontSize: 16, marginLeft: 10}}>Xoá thông báo này</Text>
+          </View>
+        </TouchableOpacity>
       </RBSheet>
     </ScrollView>
   );

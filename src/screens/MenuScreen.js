@@ -17,7 +17,11 @@ export default function MenuScreen({navigation}) {
         {/* headers */}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{fontSize: 25, fontWeight: 'bold'}}>Menu</Text>
-          <RoundedButton content={<FontAwesome5 name='search' size={25}/>} color={'#777'} backgroundColor={'#ccc'} borderRadius={20}/>
+          <TouchableOpacity onPress={() => alert("deleted")}>
+            <View style={{ backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50 }}>
+              <FontAwesome5 size={22} name='search' />
+            </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={()=>{navigation.navigate('ProfileScreen')}}>
           <View style={{flexDirection:'row', marginBottom: 10}}>
