@@ -3,7 +3,7 @@ import { Button, Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RoundedButton from '../components/RoundedButton';
-import AuthContext from '../contexts/AuthContext'
+import {AuthContext} from '../contexts/MyContexts'
 
 const exampleAvatar = require('../imgs/default-avatar.jpg');
 

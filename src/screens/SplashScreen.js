@@ -1,0 +1,18 @@
+import React from 'react';
+import {View, Text, Image} from 'react-native'
+
+export default function SplashScreen() {
+  const logo = require('../imgs/logoFB.jpg');
+  const banner = require('../imgs/bannerFB.jpg');
+  return (
+    <View style={{alignItems: 'center', flex: 1, backgroundColor: 'white'}}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <Image source={logo} style={{width: 80, height: 80}}/>
+      </View>
+      <View style={{marginBottom: 30, alignItems: 'center'}}>
+        <Image source={banner} style={{width: 308/120*60, height: 60}}/>
+        <Text>Fakebook - Learning React Native</Text>
+      </View>
+    </View>
+  );
+}
