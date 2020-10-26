@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
+import ListFriendScreen from './src/screens/ListFriendScreen';
 import Home from './src/Home';
 import {AuthContext, LoginContext, RegisterContext} from './src/contexts/MyContexts'
 import axios from 'axios';
@@ -166,6 +167,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                       <Stack.Screen name="PostScreen" component={PostScreen} />
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
+                      <Stack.Screen name="ListFriendScreen" component={ListFriendScreen}/>
                     </>
                   )}
             </Stack.Navigator>

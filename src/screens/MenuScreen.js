@@ -34,7 +34,7 @@ export default function MenuScreen({navigation}) {
         </TouchableOpacity>
 
         {/* Menu items */}
-        <TouchableOpacity containerStyle={styles.menu}>
+        <TouchableOpacity containerStyle={styles.menu} onPress={()=>navigation.navigate('ListFriendScreen')}>
           <View style={{flexDirection: 'row', alignItems:'center'}}>
             <FontAwesome5 name={'user-friends'} size={20} color={'#1976D2'}/>
             <Text style={{marginLeft: 10, fontSize: 20, fontWeight: 'bold'}}>Bạn bè</Text>
