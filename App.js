@@ -1,18 +1,24 @@
+/**
+ * Component gốc
+ * Khởi động ứng dụng, hiển thị splashscreen
+ * Load token từ bộ nhớ trong của thiết bị
+ * Nếu không tồn tại token thì hiện màn hình đăng nhập
+ */
 import * as React from 'react';
-import { Button, Settings, Text, TextInput, View } from 'react-native';
+import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {AuthContext, LoginContext, RegisterContext} from './src/contexts/MyContexts'
+
+// Child screens
+import Home from './src/Home';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
 import ListFriendScreen from './src/screens/ListFriendScreen';
-import Home from './src/Home';
-import {AuthContext, LoginContext, RegisterContext} from './src/contexts/MyContexts'
-import axios from 'axios';
 import CommentScreen from './src/screens/CommentScreen';
 import SplashScreen from './src/screens/SplashScreen'
-import { registerCustomIconType } from 'react-native-elements';
 
 const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
@@ -65,15 +71,13 @@ export default function App({ navigation }) {
       }
 
       // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
     bootstrapAsync();
   }, []);
 
+  // Xử lí logic đăng nhập, đăng ký, đăng xuất
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
@@ -106,10 +110,6 @@ export default function App({ navigation }) {
         AsyncStorage.removeItem('userToken');
       },
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
         setSignupState({error: false, isLoading: true});
 
         axios.post(API_SERVER_URL + 'signup', {
@@ -167,7 +167,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                       <Stack.Screen name="PostScreen" component={PostScreen} />
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
-                      <Stack.Screen name="ListFriendScreen" component={ListFriendScreen}/>
+                      <Stack.Screen name="ListFriendScreen" component={ListFriendScreen} options={{title: 'Danh sách bạn bè'}}/>
                     </>
                   )}
             </Stack.Navigator>

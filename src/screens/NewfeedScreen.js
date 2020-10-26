@@ -3,6 +3,7 @@ import { Text, View, Button, StyleSheet, Image } from 'react-native';
 import { ScrollView, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Post from '../components/Post';
+import InViewPort from '../components/InViewPort'
 
 const exampleAvatar = require('../imgs/default-avatar.jpg');
 const exampleImages = [
@@ -14,8 +15,10 @@ const exampleImages = [
 
 
 export default function NewfeedScreen({ navigation }) {
+
   return (
     <ScrollView>
+      {/* Create post view */}
       <View style={styles.createPostView}>
         <View style={styles.createPostTopWrapper}>
           <Image source={exampleAvatar} style={styles.avatar} />
@@ -48,21 +51,24 @@ export default function NewfeedScreen({ navigation }) {
       </View>
 
       {/* Posts list */}
+
+
       <Post
         displayName='Anh Hoàng'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
         key='postId1'
         time='Vừa xong'
-        images={exampleImages}
-        navigation={navigation}
+        photos={exampleImages}
       />
+
+        
       <Post
         displayName='Anh Hoàng'
         text='😀😂😂😊🤣❤😍😒👌😘'
         key='postId2'
         time='Vừa xong'
-        images={exampleImages}
-        navigation={navigation}
+        // video={{uri: 'content://media/external/video/media/10185'}}
+        video={{uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}}
       />
     </ScrollView>
   );

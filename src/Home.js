@@ -1,15 +1,14 @@
+/**
+ * File định nghĩa các tab chính trong ứng dụng
+ */
 import React from 'react';
-import { Text, View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import NewfeedScreen from './screens/NewfeedScreen';
 import NotificationScreen from './screens/NotificationScreen'
 import MenuScreen from './screens/MenuScreen'
-import CommentScreen from './screens/CommentScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {createStackNavigator} from '@react-navigation/stack'
 const Tab = createMaterialTopTabNavigator();
-const Stack = createStackNavigator();
 
 export default function Home() {
   return (

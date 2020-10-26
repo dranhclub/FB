@@ -1,13 +1,10 @@
+/**
+ * Component giúp hiển thị hình ảnh theo dạng lưới
+ */
 import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 export default function ImagesGridView ({images}) {
-  useEffect(()=>{
-    // if (images.length == 1) {
-    //   styles.container.width = '100%'
-    // }
-  });
-  
   return(
     <View style={styles.container}>
       {images.map((img, index)=>{

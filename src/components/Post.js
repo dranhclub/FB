@@ -1,12 +1,35 @@
+/**
+ * Component: Bài viết
+ * Bài viết sẽ gồm hình ảnh hoặc video
+ * Nếu có ảnh thì không có video và ngược lại
+ */
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, Button, StyleSheet, Image } from 'react-native';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagesGridView from './ImagesGridView';
+import VideoPlayer from 'react-native-video-player';
+import InViewPort from '../components/InViewPort';
 
-export default function Post({ displayName, time, text, images, navigation }) {
-
+export default function Post({ displayName, time, text, photos, video}) {
+  const navigation = useNavigation();
   const [liked, setLiked] = useState(false)
+  const [pause, setPause] = useState(true);
+
+  // Hiển thị video hoặc hình ảnh
+  function media() {
+    if (photos && photos.length > 0) {
+      return (<ImagesGridView images={photos} />)
+    } else if (video) {
+      return (
+        // TODO: video cần pause lại khi unfocus (bài viết bị kéo xuống, hoặc chuyển tab, hoặc nhấp vào bình luận,...)
+        // <InViewPort onChange={(isVisible) => {setPause(!isVisible)}}>
+          <VideoPlayer video={video} paused={pause}/>
+        // {/* </InViewPort> */}
+      )
+    }
+  }
 
   return (
     <View style={styles.post}>
@@ -26,10 +49,7 @@ export default function Post({ displayName, time, text, images, navigation }) {
       </View>
       <View style={styles.body}>
         <Text>{text}</Text>
-        {
-          images ? (<ImagesGridView images={images} />) : (<></>)
-        }
-        
+        {media()}
       </View>
 
       <View style={styles.actions}>

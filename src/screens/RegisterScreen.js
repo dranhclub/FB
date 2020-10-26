@@ -1,7 +1,5 @@
-import { useBackButton } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { Button, StyleSheet, Text, TextInput, View, Dimensions, KeyboardAvoidingView, Keyboard} from 'react-native'
-import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Button, StyleSheet, Text, TextInput, View, Dimensions, Keyboard} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 import Image from 'react-native-scalable-image'
 import { AuthContext, RegisterContext } from '../contexts/MyContexts';

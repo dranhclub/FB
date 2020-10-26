@@ -10,10 +10,14 @@ export default function PostScreen({navigation}) {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState();
   const [description, setDescription] = useState('');
-  const hasUnsavedChanges = Boolean(1);
 
   function getMediaType() {
     return uploadedPhotos.length > 0 ? 'photo' : uploadedVideo ? 'video' : 'none';
+  }
+
+  function hasUnsavedChanges() {
+    //TODO: implement
+    return true;
   }
 
   function photosView() {
@@ -163,7 +167,7 @@ export default function PostScreen({navigation}) {
   React.useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
-        if (!hasUnsavedChanges) { return; }
+        if (!hasUnsavedChanges()) { return; }
         e.preventDefault();
         Alert.alert(
           'Lưu bài viết?',
