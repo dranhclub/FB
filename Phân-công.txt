@@ -1,0 +1,52 @@
+=========Tiến độ=================
+0. Đăng ký, đăng nhập
+	Ok
+1. Danh sách bài viết
+	Đã có giao diện
+	Sửa lại cách hiển thị hình ảnh
+	Cần xử lí API, tức là fetch địa chỉ url nào đó, server trả dữ liệu về thì mình cần render dữ liệu ra
+2. Bình luận
+	Đã có giao diện, cần xl API
+3. Đăng bài viết
+	Validate lại dữ liệu
+	Đã có đăng photo, video, xử lí logic rồi
+	Chưa có Emotion (vd "đang cảm thấy vui vẻ...")
+4. Sửa bài viêt
+5. Báo cáo bài viêt
+6. Like: 
+	Cần làm API
+7. Search:
+	Chưa có gì cả, cần làm giao diện + api
+8. Bạn bè:
+	Đã có giao diện ds tất cả bạn bè
+	Cần làm:Gợi ý kết bạn
+9. Change password
+	Chưa có gì
+10. Thông báo:
+	cần làm api
+11. Profile
+
+==========Phân công=============
+
+Việt Hoàng
+	1.Danh sách, hiển thị bài viết, 
+	2.bình luận
+	6.like
+Đức Anh
+	11.Hiển thị Profile + Change profile
+	9. Change password
+Mạnh Cường
+	10. Thông báo
+	4,5: Sửa bài viết, báo cáo bài viết
+	3. Đăng bài viết: thêm emotion cho bài viết
+Đức Cường
+	8. Bạn bè
+		hiển thị ds bạn bè, huỷ kết bạn
+		hiển thị danh sách gợi ý
+		kết bạn
+	7. Search
+
+=================================
+account heroku:
+	dranh.club@gmail.com
+	Htmlpassword1_

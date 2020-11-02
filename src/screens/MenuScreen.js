@@ -74,6 +74,8 @@ export default function MenuScreen({navigation}) {
           <FontAwesome5 name='cog' size={30} color={'#B0BEC5'} style={{paddingHorizontal: 3}}/>
           <Text style={{fontSize: 20, marginLeft: 10}}>Cài đặt</Text>
         </View>
+        <Button  style={{backgroundColor: 'gray', color: 'black',alignItems: 'left'}} title='Đổi mật khẩu' onPress={() => navigation.navigate('ChangePasswordScreen')}/>
+      
       </TouchableOpacity>
       <TouchableOpacity  onPress={()=>signOut()}>
         <View style={styles.bottomMenus}>
