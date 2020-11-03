@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {Button, Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AuthContext} from '../contexts/MyContexts'
@@ -73,8 +73,12 @@ export default function MenuScreen({navigation}) {
           <FontAwesome5 name='cog' size={30} color={'#B0BEC5'} style={{paddingHorizontal: 3}}/>
           <Text style={{fontSize: 20, marginLeft: 10}}>Cài đặt</Text>
         </View>
-        <Button  style={{backgroundColor: 'gray', color: 'black',alignItems: 'left'}} title='Đổi mật khẩu' onPress={() => navigation.navigate('ChangePasswordScreen')}/>
-      
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ChangePasswordScreen')}>
+        <View style={styles.bottomMenus}>
+          <FontAwesome5 name='key' size={30} color={'#B0BEC5'}/>
+          <Text style={{fontSize: 20, marginLeft: 10}}>Đổi mật khẩu</Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity  onPress={()=>signOut()}>
         <View style={styles.bottomMenus}>

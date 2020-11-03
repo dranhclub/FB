@@ -13,8 +13,6 @@ export default function ChangePasswordScreen() {
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [wrongVerifyPassword, setWrongVerifyPassword] = useState(false);
   
-
-  const {changePassword} = React.useContext(AuthContext);
   const { error, isLoading } = React.useContext(RegisterContext);
 
   
@@ -38,6 +36,23 @@ export default function ChangePasswordScreen() {
 
   const onChangeVerifyPassword = (text) => {
     setWrongVerifyPassword(text != newPassword);
+  }
+
+  const changePassword = () => {
+    // TODO: gọi API change password, nhận và xử lí response
+    
+    // Example:
+    // axios.post(API_SERVER_URL + 'change_password', {
+    //   oldPassword: oldPassword,
+    //   newPassword: newPassword
+    // })
+    // .then(function (response) {
+
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+    alert('changed password');
   }
 
   return(
