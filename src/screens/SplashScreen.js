@@ -1,3 +1,6 @@
+/**
+ * Màn hình splash khi mới khởi động ứng dụng
+ */
 import React from 'react';
 import {View, Text, Image} from 'react-native'
 

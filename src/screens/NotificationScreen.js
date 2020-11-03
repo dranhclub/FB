@@ -122,6 +122,7 @@ export default function NotificationScreen() {
           )
         })
       }
+      
       {/* Options - bottom sheet */}
       <RBSheet
         height={200}

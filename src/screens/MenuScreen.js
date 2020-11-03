@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import RoundedButton from '../components/RoundedButton';
 import {AuthContext} from '../contexts/MyContexts'
 
 const exampleAvatar = require('../imgs/default-avatar.jpg');
@@ -34,7 +33,7 @@ export default function MenuScreen({navigation}) {
         </TouchableOpacity>
 
         {/* Menu items */}
-        <TouchableOpacity containerStyle={styles.menu}>
+        <TouchableOpacity containerStyle={styles.menu} onPress={()=>navigation.navigate('ListFriendScreen')}>
           <View style={{flexDirection: 'row', alignItems:'center'}}>
             <FontAwesome5 name={'user-friends'} size={20} color={'#1976D2'}/>
             <Text style={{marginLeft: 10, fontSize: 20, fontWeight: 'bold'}}>Bạn bè</Text>
