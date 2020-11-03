@@ -18,3 +18,9 @@ Xem hướng dẫn cài đặt theo mục `React Native CLI Quickstart` (không 
 3. Sau đó chạy lệnh `npx react-native run-android` 
 
     Nếu đã cài android studio và set-up máy ảo rồi, thì chỉ cần chạy lệnh trên, máy ảo và metro server sẽ tự động bật lên và khởi động ứng dụng. Nếu muốn chạy trên thiết bị điện thoại, kết nối điện thoại vào và bật chế độ USB-debugging trên điện thoại lên, sau đó chạy lệnh trên.
+
+## Về việc giả lập API
+Để đơn giản cho việc chạy ứng dụng, ta sẽ deploy một cái API server giả lập lên heroku 
+
+`https://hidden-refuge-96933.herokuapp.com/`
+
