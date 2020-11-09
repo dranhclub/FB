@@ -16,6 +16,7 @@ import Home from './src/Home';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PostScreen from './src/screens/PostScreen';
+import ChangePasswordScreen from './src/screens/ChangePasswordScreen';
 import ListFriendScreen from './src/screens/ListFriendScreen';
 import CommentScreen from './src/screens/CommentScreen';
 import SplashScreen from './src/screens/SplashScreen'
@@ -168,6 +169,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                       <Stack.Screen name="PostScreen" component={PostScreen} />
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
+                      <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />
                       <Stack.Screen name="ListFriendScreen" component={ListFriendScreen} options={{title: 'Danh sách bạn bè'}}/>
                       <Stack.Screen name="ReportScreen" component={ReportScreen} options={{title: 'Báo cáo'}} />
                     </>
