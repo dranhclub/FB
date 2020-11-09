@@ -3,19 +3,21 @@
  * Bài viết sẽ gồm hình ảnh hoặc video
  * Nếu có ảnh thì không có video và ngược lại
  */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Text, View, Button, StyleSheet, Image } from 'react-native';
-import {TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagesGridView from './ImagesGridView';
 import VideoPlayer from 'react-native-video-player';
-import InViewPort from '../components/InViewPort';
+import RBSheet from "react-native-raw-bottom-sheet";
+
 
 export default function Post({ displayName, time, text, photos, video}) {
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false)
   const [pause, setPause] = useState(true);
+
+  const refRBSheet = useRef();
 
   // Hiển thị video hoặc hình ảnh
   function media() {
@@ -33,6 +35,7 @@ export default function Post({ displayName, time, text, photos, video}) {
 
   return (
     <View style={styles.post}>
+      {/* Header of post: display name, avatar, ... */}
       <View style={styles.header}>
         <Image style={styles.avatar} source={require('../imgs/default-avatar.jpg')} />
         <View style={{ marginLeft: 10, flex: 1 }}>
@@ -42,16 +45,19 @@ export default function Post({ displayName, time, text, photos, video}) {
           </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => alert('...')}>
+          <TouchableOpacity onPress={()=>refRBSheet.current.open()}>
             <FontAwesome5 name={'ellipsis-h'} size={20} />
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Post's body */}
       <View style={styles.body}>
         <Text>{text}</Text>
         {media()}
       </View>
 
+      {/* Post's action: Like, comment, share */}
       <View style={styles.actions}>
         <View style={styles.action}>
           <TouchableOpacity onPress={() => {
@@ -85,6 +91,47 @@ export default function Post({ displayName, time, text, photos, video}) {
           </TouchableOpacity>
         </View>
       </View>
+      
+      {/* Report post */}
+      <RBSheet
+        height={300}
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent"
+          },
+          draggableIcon: {
+            backgroundColor: "#000"
+          }
+        }}
+      >
+        <TouchableOpacity onPress={()=>alert("saved")}>
+          <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+              <FontAwesome5 size={22} name='bookmark'/>
+            </View>
+            <Text style={{fontSize: 16, marginLeft: 10}}>Lưu bài viết</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('ReportScreen')}>
+          <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+              <FontAwesome5 size={22} name='exclamation'/>
+            </View>
+            <Text style={{fontSize: 16, marginLeft: 10}}>Báo cáo bài viết</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>alert("copied")}>
+          <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+              <FontAwesome5 size={22} name='link'/>
+            </View>
+            <Text style={{fontSize: 16, marginLeft: 10}}>Sao chép liên kết</Text>
+          </View>
+        </TouchableOpacity>
+      </RBSheet>
     </View>
   );
 }

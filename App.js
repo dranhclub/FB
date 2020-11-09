@@ -19,6 +19,7 @@ import PostScreen from './src/screens/PostScreen';
 import ListFriendScreen from './src/screens/ListFriendScreen';
 import CommentScreen from './src/screens/CommentScreen';
 import SplashScreen from './src/screens/SplashScreen'
+import ReportScreen from './src/screens/ReportScreen';
 
 const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
@@ -168,6 +169,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="PostScreen" component={PostScreen} />
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
                       <Stack.Screen name="ListFriendScreen" component={ListFriendScreen} options={{title: 'Danh sách bạn bè'}}/>
+                      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{title: 'Báo cáo'}} />
                     </>
                   )}
             </Stack.Navigator>
