@@ -7,7 +7,7 @@ import InViewPort from '../components/InViewPort'
 
 const exampleAvatar = require('../imgs/default-avatar.jpg');
 const exampleImages = [
-  {uri: 'https://picsum.photos/seed/hello1/200/200'},
+  ,
   {uri: 'https://picsum.photos/seed/hello2/200/200'},
   {uri: 'https://picsum.photos/seed/hello3/200/200'},
   {uri: 'https://picsum.photos/seed/hello4/200/200'},
@@ -51,18 +51,26 @@ export default function NewfeedScreen({ navigation }) {
       </View>
 
       {/* Posts list */}
-
+      <Post 
+        avatar={{uri: 'https://picsum.photos/seed/anhhoang/200/200'}}
+        displayName='Anh Hoàng'
+        text='Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod. Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod.'
+        key='postId0'
+        time='Vừa xong'
+      />
 
       <Post
+        avatar={{uri: 'https://picsum.photos/seed/anhhoang/200/200'}}
         displayName='Anh Hoàng'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
         key='postId1'
         time='Vừa xong'
-        photos={exampleImages}
+        photos={[{uri: 'https://picsum.photos/seed/hello1/200/200'}]}
       />
 
         
       <Post
+        avatar={{uri: 'https://picsum.photos/seed/anhhoang/200/200'}}
         displayName='Anh Hoàng'
         text='😀😂😂😊🤣❤😍😒👌😘'
         key='postId2'

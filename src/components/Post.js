@@ -3,7 +3,7 @@
  * Bài viết sẽ gồm hình ảnh hoặc video
  * Nếu có ảnh thì không có video và ngược lại
  */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -12,7 +12,7 @@ import VideoPlayer from 'react-native-video-player';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 
-export default function Post({ displayName, time, text, photos, video}) {
+export default function Post({ displayName, avatar, time, text, photos, video}) {
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false)
   const [pause, setPause] = useState(true);
@@ -20,7 +20,7 @@ export default function Post({ displayName, time, text, photos, video}) {
   const refRBSheet = useRef();
 
   // Hiển thị video hoặc hình ảnh
-  function media() {
+  function Media() {
     if (photos && photos.length > 0) {
       return (<ImagesGridView images={photos} />)
     } else if (video) {
@@ -30,6 +30,37 @@ export default function Post({ displayName, time, text, photos, video}) {
           <VideoPlayer video={video} paused={pause}/>
         // {/* </InViewPort> */}
       )
+    } else {
+      return null;
+    }
+  }
+
+  // Hiển thị text mô tả
+  function Description({text}) {
+    const [expanded, setExapanded] = useState(false);
+    const MAX_LENGTH = 300;
+
+    useEffect(
+      () => {
+        if (text.length < MAX_LENGTH) setExapanded(true);
+      }, []
+    );
+
+    if (expanded) {
+      return(
+        <Text style={{ paddingVertical: 10 }}>
+          {text}
+        </Text>
+      );
+    } else {
+      return(
+        <View style={{ paddingVertical: 10 }}>
+          <Text >
+            {text.slice(0, MAX_LENGTH) + "..."}
+          </Text>
+          <TouchableOpacity onPress={()=>setExapanded(true)}><Text style={{color: '#1565C0'}}>Xem thêm</Text></TouchableOpacity>
+        </View>
+      );
     }
   }
 
@@ -37,7 +68,7 @@ export default function Post({ displayName, time, text, photos, video}) {
     <View style={styles.post}>
       {/* Header of post: display name, avatar, ... */}
       <View style={styles.header}>
-        <Image style={styles.avatar} source={require('../imgs/default-avatar.jpg')} />
+        <Image style={styles.avatar} source={avatar} />
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text style={styles.displayName}>{displayName}</Text>
           <Text style={styles.info}>
@@ -53,8 +84,8 @@ export default function Post({ displayName, time, text, photos, video}) {
 
       {/* Post's body */}
       <View style={styles.body}>
-        <Text>{text}</Text>
-        {media()}
+        <Description text={text}/>
+        <Media />
       </View>
 
       {/* Post's action: Like, comment, share */}
@@ -65,8 +96,8 @@ export default function Post({ displayName, time, text, photos, video}) {
           }}>
             {
               liked ? (
-                <Text style={{ color: '#3b5998' }}>
-                  <FontAwesome5 name={'thumbs-up'} size={20} color={'#3b5998'} solid={true} />  Thích
+                <Text style={{ color: '#448AFF' }}>
+                  <FontAwesome5 name={'thumbs-up'} size={20} color={'#448AFF'} solid={true} />  Thích
                 </Text>
               ) : (
                   <Text style={{color: 'black'}}>
@@ -143,7 +174,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   header: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   avatar: {
     width: 50,
