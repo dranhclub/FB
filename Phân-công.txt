@@ -45,8 +45,3 @@ Mạnh Cường
 		hiển thị danh sách gợi ý
 		kết bạn
 	7. Search
-
-=================================
-account heroku:
-	dranh.club@gmail.com
-	Htmlpassword1_

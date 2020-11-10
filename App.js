@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {AuthContext, LoginContext, RegisterContext} from './src/contexts/MyContexts'
+import {SearchBar} from './src/screens/SearchScreen';
 
 // Child screens
 import Home from './src/Home';
@@ -21,6 +22,7 @@ import ListFriendScreen from './src/screens/ListFriendScreen';
 import CommentScreen from './src/screens/CommentScreen';
 import SplashScreen from './src/screens/SplashScreen'
 import ReportScreen from './src/screens/ReportScreen';
+import SearchScreen from './src/screens/SearchScreen';
 
 const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
@@ -172,6 +174,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />
                       <Stack.Screen name="ListFriendScreen" component={ListFriendScreen} options={{title: 'Danh sách bạn bè'}}/>
                       <Stack.Screen name="ReportScreen" component={ReportScreen} options={{title: 'Báo cáo'}} />
+                      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerTitle: props => <SearchBar/>}}  />
                     </>
                   )}
             </Stack.Navigator>

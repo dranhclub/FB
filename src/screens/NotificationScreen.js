@@ -3,8 +3,10 @@ import { Button, Text, View,Image,TouchableOpacity } from 'react-native';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
+import { useNavigation } from '@react-navigation/native';
 
 export default function NotificationScreen() {
+  const navigation = useNavigation();
   
   const exampleNotifs = [
     {
@@ -65,7 +67,7 @@ export default function NotificationScreen() {
       {/* Header */}
       <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10}}>
         <Text style={{fontSize: 25, fontWeight: 'bold'}}>Thông báo</Text>
-        <TouchableOpacity onPress={()=>alert("deleted")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("SearchScreen")}>
           <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
             <FontAwesome5 size={22} name='search'/>
           </View>
