@@ -3,6 +3,9 @@
  */
 import React from 'react'
 import { Image, View } from 'react-native';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
 
 export default function ImagesGridView({ images }) {
   switch (images.length) {
@@ -11,7 +14,7 @@ export default function ImagesGridView({ images }) {
     case 1:
       return (
         <View>
-          <Image source={images[0]} style={{ width: '100%', aspectRatio: 1 }} />
+          <Image source={images[0]} style={{width: '100%', height: windowWidth }} />
         </View>
       );
     case 2:

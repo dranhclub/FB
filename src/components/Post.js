@@ -12,10 +12,9 @@ import VideoPlayer from 'react-native-video-player';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 
-export default function Post({ displayName, avatar, time, text, photos, video}) {
+export default function Post({ displayName, avatar, time, text, photos, video, numLikes, numComments}) {
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false)
-  const [pause, setPause] = useState(true);
 
   const refRBSheet = useRef();
 
@@ -24,18 +23,16 @@ export default function Post({ displayName, avatar, time, text, photos, video}) 
     if (photos && photos.length > 0) {
       return (<ImagesGridView images={photos} />)
     } else if (video) {
-      return (
-        // TODO: video cần pause lại khi unfocus (bài viết bị kéo xuống, hoặc chuyển tab, hoặc nhấp vào bình luận,...)
-        // <InViewPort onChange={(isVisible) => {setPause(!isVisible)}}>
-          <VideoPlayer video={video} paused={pause}/>
-        // {/* </InViewPort> */}
-      )
+      return <VideoPlayer video={video}/>
     } else {
       return null;
     }
   }
 
-  // Hiển thị text mô tả
+  /* 
+    Hiển thị text mô tả
+    Nếu dài quá thì hiển thị nút "xem thêm"
+  */
   function Description({text}) {
     const [expanded, setExapanded] = useState(false);
     const MAX_LENGTH = 300;
@@ -64,6 +61,28 @@ export default function Post({ displayName, avatar, time, text, photos, video}) 
     }
   }
 
+  const NumberOfLikesAndComments = () => {
+    return(
+      <View style={styles.responses}>
+        {
+          numLikes > 0 ? 
+          <View style={styles.likes}>
+            <View style={{ backgroundColor: '#1E88E5', width: 16, height: 16, borderRadius: 25, alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome5 name={'thumbs-up'} color={'white'} solid size={8}/>
+            </View>
+            <Text style={{color: '#616161', marginLeft: 5, fontSize: 12}}>{numLikes}</Text>
+          </View>
+          : <></>
+        }
+        {
+          numComments > 0 ? 
+          <Text style={{ color: '#616161', fontSize: 12 }}>{numComments} bình luận</Text> : 
+          <></>
+        }
+      </View>
+    );
+  }
+
   return (
     <View style={styles.post}>
       {/* Header of post: display name, avatar, ... */}
@@ -87,6 +106,9 @@ export default function Post({ displayName, avatar, time, text, photos, video}) 
         <Description text={text}/>
         <Media />
       </View>
+
+      {/* Number of likes and comments */}
+      <NumberOfLikesAndComments />
 
       {/* Post's action: Like, comment, share */}
       <View style={styles.actions}>
@@ -190,8 +212,19 @@ const styles = StyleSheet.create({
     color: '#ccc',
   },
   body: {},
+  responses: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  likes: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   actions: {
-    marginTop: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 5,
     flexDirection: 'row',
     justifyContent: 'center',
   },
