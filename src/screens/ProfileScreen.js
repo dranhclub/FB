@@ -113,7 +113,12 @@ export default function ProfileScreen({navigation}) {
               })
             }
           </View>
-          <RoundedButton style={{flex: 1}} content={'Chỉnh sửa chi tiết công khai'} backgroundColor={'#E3F2FD'}  color={'black'}/>
+          <RoundedButton 
+            onPress={()=>navigation.navigate('EditProfileScreen')}
+            style={{flex: 1}} 
+            content={'Chỉnh sửa chi tiết công khai'} 
+            backgroundColor={'#E3F2FD'}  
+            color={'black'}/>
         </View>
         {/* Typical friends */}
         <View style={styles.wrapper}> 
