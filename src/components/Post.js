@@ -14,7 +14,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function Post({ displayName, avatar, time, text, photos, video, numLikes, numComments}) {
   const navigation = useNavigation();
-  const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(numLikes);
 
   const refRBSheet = useRef();
 
@@ -65,12 +66,12 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
     return(
       <View style={styles.responses}>
         {
-          numLikes > 0 ? 
+          likes > 0 ? 
           <View style={styles.likes}>
             <View style={{ backgroundColor: '#1E88E5', width: 16, height: 16, borderRadius: 25, alignItems: 'center', justifyContent: 'center' }}>
               <FontAwesome5 name={'thumbs-up'} color={'white'} solid size={8}/>
             </View>
-            <Text style={{color: '#616161', marginLeft: 5, fontSize: 12}}>{numLikes}</Text>
+            <Text style={{color: '#616161', marginLeft: 5, fontSize: 12}}>{likes}</Text>
           </View>
           : <></>
         }
@@ -114,7 +115,13 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
       <View style={styles.actions}>
         <View style={styles.action}>
           <TouchableOpacity onPress={() => {
-            setLiked(!liked);
+            if (liked) {
+              setLiked(false);
+              setLikes(likes - 1);
+            } else {
+              setLiked(true);
+              setLikes(likes + 1);
+            }
           }}>
             {
               liked ? (
@@ -147,7 +154,7 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
       
       {/* Report post */}
       <RBSheet
-        height={300}
+        height={350}
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={true}
@@ -160,6 +167,14 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
           }
         }}
       >
+        <TouchableOpacity onPress={()=>navigation.navigate("PostScreen")}>
+          <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
+              <FontAwesome5 size={22} name='edit'/>
+            </View>
+            <Text style={{fontSize: 16, marginLeft: 10}}>Sửa bài viết</Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={()=>alert("saved")}>
           <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
             <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
