@@ -1,15 +1,22 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import {Image, StyleSheet, View, Text, SafeAreaView, Dimensions, ImageBackground, Button, Alert } from "react-native";
-import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import {Image, StyleSheet, View, Text, SafeAreaView, ImageBackground, Button, Alert, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage';
 
-export default function PostScreen({navigation}) {
+export default function PostScreen({navigation, route}) {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState();
   const [description, setDescription] = useState('');
+  const [emotion, setEmotion] = useState();
+
+  React.useEffect(()=>{
+    if (route.params) {
+      setEmotion(route.params.emotion);
+      console.log(route);
+    }
+  }, [route]);
 
   function getMediaType() {
     return uploadedPhotos.length > 0 ? 'photo' : uploadedVideo ? 'video' : 'none';
@@ -20,7 +27,7 @@ export default function PostScreen({navigation}) {
     return true;
   }
 
-  function photosView() {
+  const PhotoView = () => {
     return (
       <View style={styles.imgContainer}>
         {uploadedPhotos.map((img, index) => {
@@ -45,7 +52,7 @@ export default function PostScreen({navigation}) {
     );
   }
 
-  function videoView() {
+  const VideoView = () => {
     return(
       <VideoPlayer
         video = {uploadedVideo}
@@ -118,6 +125,7 @@ export default function PostScreen({navigation}) {
       video: uploadedVideo,
       photos: uploadedPhotos,
       text: description,
+      emotion: emotion
     }
     try{
       console.log("saving...");
@@ -142,6 +150,7 @@ export default function PostScreen({navigation}) {
         setDescription(savedContent.text);
         setUploadedPhotos(savedContent.photos);
         setUploadedVideo(savedContent.video);
+        setEmotion(savedContent.emotion);
       }
     }catch(e) {
       console.log("Can not load saved post")
@@ -153,7 +162,9 @@ export default function PostScreen({navigation}) {
     navigation.setOptions({
       title: 'Tạo bài viết',
       headerRight: () => (
-        <Button onPress={() => alert('Coi như đã đăng :D')} title="Đăng" />
+        <TouchableOpacity style={{paddingHorizontal: 10}}>
+          <Text style={{color: '#717171'}}>ĐĂNG</Text>
+        </TouchableOpacity>
       ),
     });
   }, [navigation]);
@@ -188,7 +199,7 @@ export default function PostScreen({navigation}) {
                 navigation.dispatch(e.data.action)
               } 
             },
-            { text: "Tôi bấm nhầm", style: 'neutral', onPress: () => { } },
+            { text: "Tiếp tục chỉnh sửa", style: 'neutral', onPress: () => { } },
           ]
         );
       })
@@ -202,7 +213,14 @@ export default function PostScreen({navigation}) {
         <View style={styles.header}>
           <Image style={styles.avatar} source={require('../imgs/default-avatar.jpg')} />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.displayName}>Anh Hoang</Text>
+            <Text style={styles.displayName}>
+              Huy Hoàng
+              {
+                emotion ?
+                  <Text style={{ color: '#717171', fontSize: 16, fontWeight: 'normal' }}> ― Đang {emotion.icon} cảm thấy {emotion.name}</Text>
+                  : null
+              }
+            </Text>
             <View style={styles.options}>
               <TouchableOpacity>
                 <View style={styles.option}>
@@ -233,8 +251,8 @@ export default function PostScreen({navigation}) {
               value={description}
             />
             {
-              getMediaType() === 'photo' ? photosView() : 
-              getMediaType() === 'video' ? videoView() : null
+              getMediaType() === 'photo' ? <PhotoView /> : 
+              getMediaType() === 'video' ? <VideoView /> : null
             }
           </ScrollView>
         </SafeAreaView>
@@ -242,16 +260,18 @@ export default function PostScreen({navigation}) {
 
       {/* options */}
       <View style={styles.bottomMenu}>
-        <View style={{flexDirection: 'row', alignItems:'center'}}>
+        <View style={{flexDirection: 'row', alignItems:'center', paddingHorizontal: 10}}>
           <Text style={{flex: 1}}>Thêm vào bài viết của bạn</Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity onPress={()=>showImgPicker()}>
-              <FontAwesome5 color={'green'} name='image' size={30}/>
+              <FontAwesome5 color={'#4CAF50'} name='image' size={25}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>showVideoPicker()}>
-              <FontAwesome5 color={'#4287f5'} name='video'size={30} style={{marginHorizontal: 4}}/>
+              <FontAwesome5 color={'#4287f5'} name='video'size={25} style={{marginHorizontal: 4}}/>
             </TouchableOpacity>
-            <FontAwesome5 color={'#feff02'} name='laugh' size={30}/>
+            <TouchableOpacity onPress={()=>navigation.navigate('EmotionScreen')}>
+              <FontAwesome5 color={'#FBC02D'} name='laugh' size={25}/>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -276,7 +296,8 @@ const styles = StyleSheet.create(
     },
     displayName: {
       fontWeight: 'bold',
-      fontSize: 20
+      fontSize: 18,
+      paddingRight: 40
     },
     options: {
       flexDirection: 'row'
@@ -285,15 +306,15 @@ const styles = StyleSheet.create(
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      paddingVertical: 5,
+      paddingVertical: 3,
       paddingHorizontal: 5,
       flexDirection: 'row',
       alignItems: 'center'
     },
     bottomMenu: {
-      height: 50,
+      height: 45,
       borderWidth: 1,
-      borderColor: '#ccc',
+      borderColor: '#eee',
       borderRadius: 4,
       overflow: 'hidden',
       justifyContent: 'center'

@@ -10,8 +10,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {AuthContext, LoginContext, RegisterContext} from './src/contexts/MyContexts'
-import {SearchBar} from './src/screens/SearchScreen';
-
 // Child screens
 import Home from './src/Home';
 import LoginScreen from './src/screens/LoginScreen';
@@ -27,6 +25,7 @@ import EditProfileScreen from './src/screens/EditProfileScreen';
 import FriendScreen from './src/screens/FriendScreen';
 import ListFriendRequestsScreen from './src/screens/ListFriendRequestsScreen';
 import ListFriendSuggestionsScreen from './src/screens/ListFriendSuggestionsScreen';
+import EmotionScreen from './src/screens/EmotionScreen';
 
 const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
@@ -174,6 +173,7 @@ export default function App({ navigation }) {
                     <>
                       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                       <Stack.Screen name="PostScreen" component={PostScreen} />
+                      <Stack.Screen name="EmotionScreen" component={EmotionScreen} options={{title: 'Bạn đang cảm thấy thế nào?'}}/>
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
                       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />
                       <Stack.Screen name="FriendScreen" component={FriendScreen} options={{title: 'Bạn bè'}}/>
@@ -182,7 +182,7 @@ export default function App({ navigation }) {
                       <Stack.Screen name="ListFriendSuggestionsScreen" component={ListFriendSuggestionsScreen} options={{title: 'Gợi ý kết bạn'}}/>
                       <Stack.Screen name="ReportScreen" component={ReportScreen} options={{title: 'Báo cáo'}} />
                       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ title: 'Chỉnh sửa trang cá nhân'}}  />
-                      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerTitle: props => <SearchBar/>}}  />
+                      <Stack.Screen name="SearchScreen" component={SearchScreen} />
                     </>
                   )}
             </Stack.Navigator>

@@ -86,43 +86,44 @@ const DATA = [
   },
 ]
 
-/* Khung "Bạn đang nghĩ gì?" */
-const CreatePostView = () => {
-  return (
-    <View style={styles.createPostView}>
-      <View style={styles.createPostTopWrapper}>
-        <Image source={exampleAvatar} style={styles.avatar} />
-        <View style={styles.whatDoUThinkBtn}>
-          <TouchableHighlight onPress={() => navigation.navigate('PostScreen')} underlayColor={'#ccc'}>
-            <Text style={{ fontSize: 18 }}>Bạn đang nghĩ gì?</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-      <View style={styles.createPostBottomWrapper}>
-        <View style={styles.postBtn}>
-          <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <FontAwesome5 name={'edit'} size={15} />
-            <Text style={{ fontSize: 12 }}> Trạng thái</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ borderLeftWidth: 1, borderRightWidth: 1, ...styles.postBtn }}>
-          <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <FontAwesome5 name={'image'} size={15} />
-            <Text style={{ fontSize: 12 }}> Ảnh</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.postBtn}>
-          <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <FontAwesome5 name={'map-marker-alt'} size={15} />
-            <Text style={{ fontSize: 12 }}> Check in</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-}
-
 export default function NewfeedScreen({ navigation }) {
+
+  /* Khung "Bạn đang nghĩ gì?" */
+  const CreatePostView = () => {
+    return (
+      <View style={styles.createPostView}>
+        <View style={styles.createPostTopWrapper}>
+          <Image source={exampleAvatar} style={styles.avatar} />
+          <View style={styles.whatDoUThinkBtn}>
+            <TouchableHighlight onPress={() => navigation.navigate('PostScreen')} underlayColor={'#ccc'}>
+              <Text style={{ fontSize: 18 }}>Bạn đang nghĩ gì?</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+        <View style={styles.createPostBottomWrapper}>
+          <View style={styles.postBtn}>
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <FontAwesome5 name={'edit'} size={15} />
+              <Text style={{ fontSize: 12 }}> Trạng thái</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ borderLeftWidth: 1, borderRightWidth: 1, ...styles.postBtn }}>
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <FontAwesome5 name={'image'} size={15} />
+              <Text style={{ fontSize: 12 }}> Ảnh</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.postBtn}>
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <FontAwesome5 name={'map-marker-alt'} size={15} />
+              <Text style={{ fontSize: 12 }}> Check in</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View>
       <FlatList 

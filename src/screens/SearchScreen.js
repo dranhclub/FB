@@ -88,16 +88,23 @@ function People() {
   );
 }
 
-export function SearchBar() {
-  return (
-    <View style={styles.searchBar}>
-      <FontAwesome5 name='search' color='#757575' size={20} />
-      <TextInput placeholder='Tìm kiếm' value='ánh'/>
-    </View>
-  );
-};
+export default function SearchScreen({navigation}) {
 
-export default function SearchScreen() {
+  const SearchBar = () => {
+    return (
+      <View style={styles.searchBar}>
+        <FontAwesome5 name='search' color='#757575' size={20} />
+        <TextInput placeholder='Tìm kiếm' value='Ánh'/>
+      </View>
+    );
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+       headerTitle: props => <SearchBar/>
+    });
+  }, [navigation]);
+
   return (
     <Tab.Navigator
       tabBarOptions={{
