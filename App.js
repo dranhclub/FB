@@ -24,6 +24,9 @@ import SplashScreen from './src/screens/SplashScreen'
 import ReportScreen from './src/screens/ReportScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
+import FriendScreen from './src/screens/FriendScreen';
+import ListFriendRequestsScreen from './src/screens/ListFriendRequestsScreen';
+import ListFriendSuggestionsScreen from './src/screens/ListFriendSuggestionsScreen';
 
 const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
@@ -173,7 +176,10 @@ export default function App({ navigation }) {
                       <Stack.Screen name="PostScreen" component={PostScreen} />
                       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
                       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />
+                      <Stack.Screen name="FriendScreen" component={FriendScreen} options={{title: 'Bạn bè'}}/>
                       <Stack.Screen name="ListFriendScreen" component={ListFriendScreen} options={{title: 'Danh sách bạn bè'}}/>
+                      <Stack.Screen name="ListFriendRequestsScreen" component={ListFriendRequestsScreen} options={{title: 'Lời mời kết bạn'}}/>
+                      <Stack.Screen name="ListFriendSuggestionsScreen" component={ListFriendSuggestionsScreen} options={{title: 'Gợi ý kết bạn'}}/>
                       <Stack.Screen name="ReportScreen" component={ReportScreen} options={{title: 'Báo cáo'}} />
                       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ title: 'Chỉnh sửa trang cá nhân'}}  />
                       <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerTitle: props => <SearchBar/>}}  />
