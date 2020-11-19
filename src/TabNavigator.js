@@ -3,14 +3,14 @@
  */
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import NewfeedScreen from './screens/NewfeedScreen';
+import NewfeedScreen from './screens/posts-screens/NewfeedScreen';
 import NotificationScreen from './screens/NotificationScreen'
 import MenuScreen from './screens/MenuScreen'
-import ProfileScreen from './screens/ProfileScreen'
+import ProfileScreen from './screens/profile-screens/ProfileScreen'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 const Tab = createMaterialTopTabNavigator();
 
-export default function Home() {
+export default function TabNavigator() {
   return (
     <Tab.Navigator tabBarOptions={{showIcon: true, showLabel: false}}>
       <Tab.Screen name="NewfeedScreen" component={NewfeedScreen}

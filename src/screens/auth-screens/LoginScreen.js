@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Button, Text, TextInput, View, StyleSheet, TouchableOpacity,Dimensions, Keyboard} from 'react-native'
 import Image from 'react-native-scalable-image';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {AuthContext, LoginContext} from '../contexts/MyContexts';
+import {AuthContext, LoginContext} from '../../contexts/MyContexts';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export function WarningComponent({text}) {
@@ -14,6 +14,8 @@ export function WarningComponent({text}) {
   );
 }
 
+const coverImage = require('../../imgs/login-img.png');
+
 export default function LoginScreen ({navigation}) {
   const [phonenumber, setPhonenumber] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -24,6 +26,12 @@ export default function LoginScreen ({navigation}) {
   const { error, isLoading } = React.useContext(LoginContext);
 
   const [isShowImage, setIsShowImage] = useState(true);
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerShown: false
+    });
+  },[navigation]);
 
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
@@ -59,7 +67,7 @@ export default function LoginScreen ({navigation}) {
       <Spinner visible={isLoading}/>
       {
         isShowImage ? (
-          <Image style={styles.registerImg} width={Dimensions.get('window').width} source={require('../imgs/login-img.png')} />
+          <Image style={styles.registerImg} width={Dimensions.get('window').width} source={coverImage} />
         ) : <></>
       }
       <View style={styles.subContainer}>

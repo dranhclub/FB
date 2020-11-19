@@ -1,60 +1,51 @@
 import React from 'react';
 import { FlatList, Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import RoundedButton from '../components/RoundedButton';
+import RoundedButton from '../../components/RoundedButton';
 
-export default function ListFriendRequestsScreen() {
+export default function ListFriendSuggestionsScreen() {
   const DATA = [
     {
       id: '1',
-      name: 'Đình Đạt',
-      avatar: { uri: 'https://picsum.photos/seed/dinhdat/200/200' },
-      numMutualFriend: 33,
-      time: '3 ngày'
+      name: 'Duy Drak',
+      avatar: { uri: 'https://picsum.photos/seed/duydrak/200/200' },
+      numMutualFriend: 0,
     },
     {
       id: '2',
-      name: 'Trương Minh Phúc',
-      avatar: { uri: 'https://picsum.photos/seed/truongminhphuc/200/200' },
-      numMutualFriend: 0,
-      time: '2 tuần'
+      name: 'Nguyễn Ngọc Sinh',
+      avatar: { uri: 'https://picsum.photos/seed/nguyenngocsinh/200/200' },
+      numMutualFriend: 9,
     },
     {
       id: '3',
-      name: 'Sam sam',
-      avatar: { uri: 'https://picsum.photos/seed/samsam/200/200' },
-      numMutualFriend: 0,
-      time: '2 tuần'
+      name: 'Nguyễn Văn Khoa',
+      avatar: { uri: 'https://picsum.photos/seed/nguyenvankhoa/200/200' },
+      numMutualFriend: 48,
     },
     {
       id: '4',
-      name: 'Đình Đạt',
-      avatar: { uri: 'https://picsum.photos/seed/dinhdat/200/200' },
-      numMutualFriend: 33,
-      time: '3 ngày'
+      name: 'Son Hoang',
+      avatar: { uri: 'https://picsum.photos/seed/sonhoang/200/200' },
+      numMutualFriend: 4,
     },
     {
       id: '5',
-      name: 'Trương Minh Phúc',
-      avatar: { uri: 'https://picsum.photos/seed/truongminhphuc/200/200' },
-      numMutualFriend: 0,
-      time: '2 tuần'
+      name: 'Phạm Quang Thanh',
+      avatar: { uri: 'https://picsum.photos/seed/phamquangthanh/200/200' },
+      numMutualFriend: 15,
     },
     {
       id: '6',
-      name: 'Sam sam',
-      avatar: { uri: 'https://picsum.photos/seed/samsam/200/200' },
-      numMutualFriend: 0,
-      time: '2 tuần'
+      name: 'Nông Thanh Đạt',
+      avatar: { uri: 'https://picsum.photos/seed/nongthanhdat/200/200' },
+      numMutualFriend: 14,
     },
   ];
 
   const Header = () => {
     return (
       <View style={styles.header}>
-        <Text style={styles.title}>Lời mời kết bạn</Text>
-        <TouchableOpacity>
-          <Text style={styles.edit}>Sắp xếp</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>Những người có thể bạn biết</Text>
       </View>
     );
   }
@@ -68,7 +59,6 @@ export default function ListFriendRequestsScreen() {
         <View style={{flex: 1}}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-            <Text style={{ color: '#BDBDBD' }}>{item.time}</Text>
           </View>
           <View style={{paddingVertical: 3}}>
             {
@@ -77,9 +67,9 @@ export default function ListFriendRequestsScreen() {
                 : null
             }
           </View>
-          <RoundedButton content='Chấp nhận' backgroundColor={'#2979FF'} color='white'/>
+          <RoundedButton content='Kết bạn' backgroundColor={'#2979FF'} color='white'/>
           <View style={{paddingVertical: 3}}></View>
-          <RoundedButton content='Xoá' backgroundColor={'#ECEFF1'} color='black'/>
+          <RoundedButton content='Gỡ' backgroundColor={'#ECEFF1'} color='black'/>
         </View>
       </View>
     );
@@ -92,14 +82,16 @@ export default function ListFriendRequestsScreen() {
       data={DATA}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      />
+      onRefresh={()=>{}}
+      refreshing={false}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    padding: 10
+    padding: 10,
   },
   header: {
     flexDirection: 'row',

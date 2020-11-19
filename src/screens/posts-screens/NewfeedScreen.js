@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, View,  StyleSheet, Image, FlatList } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Post from '../components/Post';
+import Post from '../../components/Post';
 
-const exampleAvatar = require('../imgs/default-avatar.jpg');
+const exampleAvatar = require('../../imgs/default-avatar.jpg');
 
 const DATA = [
   {
@@ -36,7 +36,7 @@ const DATA = [
     time: '2 giờ',
     text: 'Thấy anh lúc chiều thế là ưng\nMê anh quá chừng thế là yêu.. 🤭',
     photos: [
-      require('../imgs/125269147_1093885694377989_4817391640640507065_o.jpg')
+      require('../../imgs/125269147_1093885694377989_4817391640640507065_o.jpg')
     ],
     video: null,
     numLikes: 20,
@@ -44,12 +44,12 @@ const DATA = [
   },
   {
     id: '3.1',
-    avatar: require('../imgs/system32_comic.jpg'),
+    avatar: require('../../imgs/system32_comic.jpg'),
     displayName: 'System32 Comics',
     time: '7 giờ',
     text: 'Computer Test',
     photos: [
-      require('../imgs/computer_test.jpg')
+      require('../../imgs/computer_test.jpg')
     ],
     video: null,
     numLikes: 30,
@@ -57,12 +57,12 @@ const DATA = [
   },
   {
     id: '4',
-    avatar: require('../imgs/codelearn.io_avatar.png'),
+    avatar: require('../../imgs/codelearn.io_avatar.png'),
     displayName: 'CodeLearn.io',
     time: '4 giờ',
     text: 'Chuyện đâu của riêng ai...',
     photos: [
-      require('../imgs/codelearn_meme.jpg')
+      require('../../imgs/codelearn_meme.jpg')
     ],
     video: null,
     numLikes: 21,

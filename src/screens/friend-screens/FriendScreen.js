@@ -4,7 +4,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
-import RoundedButton from '../components/RoundedButton';
+import RoundedButton from '../../components/RoundedButton';
 
 export default function FriendScreen() {
   const navigation = useNavigation();

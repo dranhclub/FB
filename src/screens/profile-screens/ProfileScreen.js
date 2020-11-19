@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Dimensions } from 'react-native';
-import RoundedButton from '../components/RoundedButton';
+import RoundedButton from '../../components/RoundedButton';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Post from '../components/Post';
+import Post from '../../components/Post';
 
 const windowWidth = Dimensions.get('window').width;
-const exampleCoverImage = require('../imgs/example.jpg');
-const exampleAvatar = require('../imgs/default-avatar.jpg');
+const exampleCoverImage = require('../../imgs/example.jpg');
+const exampleAvatar = require('../../imgs/default-avatar.jpg');
 
 export default function ProfileScreen({navigation}) {
 

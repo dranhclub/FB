@@ -5,6 +5,8 @@ import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
 import AsyncStorage from '@react-native-community/async-storage';
 
+const defaultAvatar = require('../../imgs/default-avatar.jpg');
+
 export default function PostScreen({navigation, route}) {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState();
@@ -211,7 +213,7 @@ export default function PostScreen({navigation, route}) {
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {/* header */}
         <View style={styles.header}>
-          <Image style={styles.avatar} source={require('../imgs/default-avatar.jpg')} />
+          <Image style={styles.avatar} source={defaultAvatar} />
           <View style={{ marginLeft: 10 }}>
             <Text style={styles.displayName}>
               Huy Hoàng

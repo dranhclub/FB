@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View, Dimensions, Keyboard} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 import Image from 'react-native-scalable-image'
-import { AuthContext, RegisterContext } from '../contexts/MyContexts';
+import { AuthContext, RegisterContext } from '../../contexts/MyContexts';
 import { WarningComponent } from './LoginScreen';
+
+const coverImage = require('../../imgs/register-img.png');
 
 export default function RegisterScreen() {
   const [isShowImage, setIsShowImage] = useState(true);
@@ -49,12 +51,13 @@ export default function RegisterScreen() {
   }
 
   const onChangePassword = (text) => {
+    setPassword(text);
     if (text == '') setInvalidPassword(true);
     else setInvalidPassword(false);
   }
 
   const onChangeVerifyPassword = (text) => {
-    setWrongVerifyPassword(text != password);
+    setWrongVerifyPassword(text !== password);
   }
 
   return(
@@ -62,7 +65,7 @@ export default function RegisterScreen() {
       <Spinner visible={isLoading}/>
       {
           isShowImage ? (
-            <Image style={styles.registerImg} width={Dimensions.get('window').width} source={require('../imgs/register-img.png')} />
+            <Image style={styles.registerImg} width={Dimensions.get('window').width} source={coverImage} />
           ) : <></>
       }
       <View style={styles.topWrapper}>

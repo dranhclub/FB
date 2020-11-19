@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View, Dimensions, KeyboardAvoidingView, Keyboard} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
-import { AuthContext, RegisterContext } from '../contexts/MyContexts';
+import { AuthContext, RegisterContext } from '../../contexts/MyContexts';
 import { WarningComponent } from './LoginScreen';
 
 export default function ChangePasswordScreen() {

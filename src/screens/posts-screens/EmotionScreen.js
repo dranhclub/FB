@@ -114,7 +114,10 @@ export default function EmotionScreen({navigation}) {
 
   const renderItem = ({item}) => {
     return(
-      <TouchableOpacity style={styles.itemWrapper} onPress={()=>{navigation.navigate('PostScreen', {emotion: item})}}>
+      <TouchableOpacity 
+        style={styles.itemWrapper} 
+        onPress={()=>{navigation.navigate('PostScreen', {emotion: item})}}
+      >
         <Text style={{fontSize: 25}}>{item.icon}</Text>
         <Text>  {item.name}</Text>
       </TouchableOpacity>

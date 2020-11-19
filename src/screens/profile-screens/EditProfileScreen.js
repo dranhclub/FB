@@ -4,8 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
 
-const exampleAvatar = require('../imgs/avatar.jpg');
-const exampleCover = require('../imgs/cover.jpg');
+const exampleAvatar = require('../../imgs/avatar.jpg');
+const exampleCover = require('../../imgs/cover.jpg');
 
 export default function EditProfileScreen() {
 
