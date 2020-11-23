@@ -19,5 +19,6 @@ export default ResponseCode = {
   NOT_ACCESS : '1009',
   ACTION_HAS_BEEN_DONE_PREVIOUSLY_BY_THIS_USER : '1010',
   // tự định nghĩa:
-  WRONG_PASSWORD: '1011'
+  WRONG_PASSWORD: '1011',
+  USER_NOT_YET_UPDATE_PROFILE: '1012'
 };

@@ -1,14 +1,18 @@
 import React from 'react';
-import {Button, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {AuthContext} from '../contexts/MyContexts'
+import { useDispatch, useSelector } from 'react-redux';
+import {logoutRequest} from '../slices/authSlice';
 
 const exampleAvatar = require('../imgs/default-avatar.jpg');
 
 export default function MenuScreen({navigation}) {
   
-  const {signOut} = React.useContext(AuthContext);
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(logoutRequest());
+  }
 
   return(
     <ScrollView>
@@ -80,7 +84,7 @@ export default function MenuScreen({navigation}) {
           <Text style={{fontSize: 20, marginLeft: 10}}>Đổi mật khẩu</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity  onPress={()=>signOut()}>
+      <TouchableOpacity  onPress={signOut}>
         <View style={styles.bottomMenus}>
           <FontAwesome5 name='door-open' size={30} color={'#B0BEC5'}/>
           <Text style={{fontSize: 20, marginLeft: 10}}>Đăng xuất</Text>

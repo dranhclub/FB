@@ -10,15 +10,21 @@ import {
   Keyboard,
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {AuthContext, RegisterContext} from '../contexts/MyContexts';
+import {AuthContext, RegisterContext} from '../../contexts/MyContexts';
 import {WarningComponent} from './LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
-const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
+import {useDispatch} from 'react-redux';
+import {logoutRequest} from '../../slices/authSlice';
+import {API_SERVER_URL} from "@env"
 
 export default function ChangePasswordScreen({navigation}) {
 
-  const {signOut} = React.useContext(AuthContext);
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(logoutRequest());
+  }
+
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = React.useState('');
 
