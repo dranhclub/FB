@@ -1,10 +1,16 @@
-/* eslint-disable prettier/prettier */
-import { API_URL } from '@env';
 import axios from 'axios';
 import queryString from 'query-string';
 
+// API on heroku server:
+const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
+
+// API on local for debug
+// const API_SERVER_URL = 'http://192.168.1.11:3000/';
+
+console.log("API: " + API_SERVER_URL);
+
 const axiosClient = axios.create({
-  baseURL: API_URL,
+  baseURL: API_SERVER_URL,
   // headers: {
   //   'content-type': 'application/json',
   // },

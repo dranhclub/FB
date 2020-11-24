@@ -11,7 +11,7 @@ import * as colors from './../../../constants/colors';
 function PhoneNumberScreen({ navigation, route }) {
   const { control, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
-  const haveErrorCreateAccount = route.params === 'ERROR' ? true : false;
+  const haveErrorCreateAccount = route.params?.error ? true : false;
 
   let errorMsg = null;
   if (errors.phoneNumber) {

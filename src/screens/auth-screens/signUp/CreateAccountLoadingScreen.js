@@ -26,7 +26,7 @@ function CreateAccountLoadingScreen({ navigation }) {
         navigation.navigate('SignInAlertScreen');
       }, 1500);
     } else if (createAccountStatus === 'FAILED') {
-      navigation.navigate('PhoneNumberScreen', 'ERROR');
+      navigation.navigate('PhoneNumberScreen', {error: true});
     }
   });
 

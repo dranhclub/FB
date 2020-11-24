@@ -4,25 +4,8 @@ import axiosClient from './axiosClient';
 
 const authApi = {
   signUp: params => {
-    // const url = `/user/signup?${queryString.stringify(params)}`;
-    // return axiosClient.post(url);
-    // phonenumber o
-    // password o
-    // uuid o
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          code: '1000',
-        });
-      }, 1000);
-    });
-    // return new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     resolve({
-    //       code: '9996',
-    //     });
-    //   }, 1000);
-    // });
+    const url = 'signup';
+    return axiosClient.post(url, params);
   },
   login: params => {
     // const url = `/link?${queryString.stringify(params)}`;

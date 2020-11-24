@@ -7,8 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
-    "mock-db": "json-server --watch --host 192.168.30.101 db/db.json"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
@@ -24,7 +23,6 @@
     "react-native": "0.63.3",
     "react-native-bottom-action-sheet": "^2.0.1",
     "react-native-date-picker": "^3.2.5",
-    "react-native-dotenv": "^2.4.2",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-image-helper": "0.0.3",
