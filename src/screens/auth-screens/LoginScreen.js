@@ -1,3 +1,6 @@
+/*
+  deprecated
+*/
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Button, Text, TextInput, View, StyleSheet, TouchableOpacity,Dimensions, Keyboard} from 'react-native'
 import Image from 'react-native-scalable-image';
