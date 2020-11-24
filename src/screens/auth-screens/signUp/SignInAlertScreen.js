@@ -17,7 +17,7 @@ function SignInAlertScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(loginRequestFromSignInAlertScreen({
-      phonenumber: phoneNumberCreated,
+      phoneNumber: phoneNumberCreated,
       password: passwordCreated,
     }));
   }, []);

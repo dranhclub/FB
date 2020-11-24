@@ -29,14 +29,14 @@ function VerifyAccountScreen({ navigation }) {
 
   const onSubmit = data => {
     dispatch(checkVerifyCodeRequest({
-      phonenumber: phoneNumberCreated,
+      phoneNumber: phoneNumberCreated,
       code_verify: data.verifyCode,
     }));
   };
 
   useEffect(() => {
     authApi.getVerifyCode({
-      phonenumber: phoneNumberCreated,
+      phoneNumber: phoneNumberCreated,
     });
   }, []);
 

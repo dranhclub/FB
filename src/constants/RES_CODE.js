@@ -18,3 +18,6 @@ export const UPLOAD_FILE_FAILED = '1007';
 export const MAXIMUM_NUMBER_OF_IMAGES = '1008';
 export const NOT_ACCESS = '1009';
 export const ACTION_HAS_BEEN_DONE_PREVIOUSLY_BY_THIS_USER = '1010';
+// tự định nghĩa:
+export const WRONG_PASSWORD = '1011';
+export const PHONE_NUMBER_UNMATCH = '1012';

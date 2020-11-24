@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authApi from '../apis/authApi';
-import * as responses from './../constants/responses';
+import * as RES_CODE from './../constants/RES_CODE';
 
 /*
   Lấy token từ bộ nhớ trong ra, nếu có thì đăng nhập vào ứng dụng luôn
@@ -131,6 +131,18 @@ export const logoutRequest = createAsyncThunk('auth/logoutRequest', async params
   }
 });
 
+export const loginRequestFromSignInScreen = createAsyncThunk('auth/loginRequestFromSignInScreen', async params => {
+  try {
+    console.log("Login request:", params);
+    const response = await authApi.login(params);
+    console.log("Login response:", response);
+
+    return response;
+  } catch (error) {
+    console.log('Error at loginRequestFromSignInScreen:', error.message);
+  }
+});
+
 export const loginRequestFromSelectAccountScreen = createAsyncThunk('auth/loginRequestFromSelectAccountScreen', async params => {
   try {
     const response = await authApi.login(params);
@@ -166,10 +178,12 @@ const auth = createSlice({
     passwordCreated: null,
     avatarCreated: null,
 
+    loadingLoginRequestFromSignInScreen: false,
     loadingLoginRequestFromSelectAccountScreen: false,
 
     loadingSignUpRequest: false,
     createAccountStatus: null,
+    signInStatus: null,
 
     loadingLoginRequestFromSignInAlertScreen: true,
 
@@ -192,6 +206,9 @@ const auth = createSlice({
     },
     resetCreateAccountStatus: state => {
       state.createAccountStatus = null;
+    },
+    resetSignInStatus: state => {
+      state.signInStatus = null
     }
   },
   extraReducers: {
@@ -235,7 +252,7 @@ const auth = createSlice({
     },
     [signUpRequest.fulfilled]: (state, action) => {
       state.loadingSignUpRequest = false;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
         state.createAccountStatus = 'SUCCESS';
       } else {
         state.createAccountStatus = 'FAILED';
@@ -250,7 +267,7 @@ const auth = createSlice({
     },
     [loginRequestFromSignInAlertScreen.fulfilled]: (state, action) => {
       state.loadingLoginRequestFromSignInAlertScreen = false;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
         state.tokenMain = action.payload.data.token;
         state.usernameMain = action.payload.data.username;
       }
@@ -281,7 +298,7 @@ const auth = createSlice({
     },
     [checkVerifyCodeRequest.fulfilled]: (state, action) => {
       state.loadingCheckVerifyCodeRequest = false;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
         state.checkVerifyCodeRequestStatus = 'SUCCESS';
         state.tokenMain = action.payload.data.token;
       } else {
@@ -297,11 +314,11 @@ const auth = createSlice({
     },
     [changeInfoAfterSignUpRequest.fulfilled]: (state, action) => {
       state.loadingChangeInfoAfterSignUpRequest = false;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
         state.inApp = true;
         state.avatarMain = action.payload.data.avatar;
         state.usernameMain = action.payload.data.username;
-        state.phoneNumberMain = action.payload.data.phonenumber;
+        state.phoneNumberMain = action.payload.data.phoneNumber;
         // is_blocked
         // online
         state.avatarPersist = action.payload.data.avatar;
@@ -309,7 +326,37 @@ const auth = createSlice({
 
       }
     },
+    [loginRequestFromSignInScreen.pending]: (state) => {
+      state.loadingLoginRequestFromSignInScreen = true;
+    },
+    [loginRequestFromSignInScreen.rejected]: () => {
 
+    },
+    [loginRequestFromSignInScreen.fulfilled]: (state, action) => {
+      state.loadingLoginRequestFromSignInScreen = false;
+      switch(action.payload.code) {
+        case RES_CODE.OK:
+          state.inApp = true;
+          state.usernameMain = action.payload.data.username;
+          state.tokenMain = action.payload.data.token;
+          // AsyncStorage
+          break;
+        case RES_CODE.WRONG_PASSWORD:
+          state.signInStatus = {
+            error: {
+              message: action.payload.message
+            }
+          }
+          break;
+        case RES_CODE.PHONE_NUMBER_UNMATCH:
+          state.signInStatus = {
+            error: {
+              message: action.payload.message
+            }
+          }
+          break;
+      }
+    },
     [loginRequestFromSelectAccountScreen.pending]: (state) => {
       state.loadingLoginRequestFromSelectAccountScreen = true;
     },
@@ -318,7 +365,7 @@ const auth = createSlice({
     },
     [loginRequestFromSelectAccountScreen.fulfilled]: (state, action) => {
       state.loadingLoginRequestFromSelectAccountScreen = false;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
         state.inApp = true;
         state.usernameMain = action.payload.data.username;
         state.tokenMain = action.payload.data.token;
@@ -337,7 +384,7 @@ const auth = createSlice({
       state.inApp = false;
       state.tokenMain = null;
       state.tokenPersist = null;
-      if (action.payload.code === responses.OK) {
+      if (action.payload.code === RES_CODE.OK) {
 
       } else {
 
@@ -353,5 +400,6 @@ export const {
   savePhoneNumberCreated,
   savePasswordCreated,
   resetCreateAccountStatus,
+  resetSignInStatus
 } = actions;
 export default reducer;

@@ -17,7 +17,7 @@ export function WarningComponent({text}) {
 const coverImage = require('../../imgs/login-img.png');
 
 export default function LoginScreen ({navigation}) {
-  const [phonenumber, setPhonenumber] = React.useState('');
+  const [phoneNumber, setPhonenumber] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const [wrongPhonenumber, setWrongPhonenumber] = useState(false);
@@ -81,7 +81,7 @@ export default function LoginScreen ({navigation}) {
               error === 'NET_ERR' ? <WarningComponent text='Lỗi kết nối'/> : null
             }
           </View>
-          <Button color={'#2979FF'} title='Đăng nhập' onPress={() => { if (!wrongPhonenumber) signIn({ phonenumber, password }) }} />
+          <Button color={'#2979FF'} title='Đăng nhập' onPress={() => { if (!wrongPhonenumber) signIn({ phoneNumber, password }) }} />
         </View>
         <View style={{marginBottom: 20}}>
           <View style={{borderBottomWidth: 1, borderColor: '#ccc'}}></View>

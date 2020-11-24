@@ -14,7 +14,7 @@ function CreateAccountLoadingScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(signUpRequest({
-      phonenumber: phoneNumberCreated,
+      phoneNumber: phoneNumberCreated,
       password: passwordCreated,
       uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
     }));

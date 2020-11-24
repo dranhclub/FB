@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import queryString from 'query-string';
 import axiosClient from './axiosClient';
 
@@ -8,28 +7,13 @@ const authApi = {
     return axiosClient.post(url, params);
   },
   login: params => {
-    // const url = `/link?${queryString.stringify(params)}`;
-    // return axiosClient.post(url);
-    // phonenumber o
-    // password o
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          code: '1000',
-          data: {
-            id: 'demoId',
-            username: 'dmUnLg',
-            token: 'demoTokenLogin',
-            avatar: '-1', // -1 doi doi ten va avatar, 1 actived
-          },
-        });
-      }, 1000);
-    });
+    const url = 'login';
+    return axiosClient.post(url, params);
   },
   getVerifyCode: params => {
     // const url = `/link?${queryString.stringify(params)}`;
     // return axiosClient.post(url);
-    // phonenumber o
+    // phoneNumber o
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
@@ -44,7 +28,7 @@ const authApi = {
   checkVerifyCode: params => {
     // const url = `/link?${queryString.stringify(params)}`;
     // return axiosClient.post(url);
-    // phonenumber o
+    // phoneNumber o
     // code_verify o
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -72,7 +56,7 @@ const authApi = {
           data: {
             id: 'demoId',
             username: 'dmUnCIAS',
-            phonenumber: 'dmPNCIAS', // x
+            phoneNumber: 'dmPNCIAS', // x
             created: 'demoCreated',
             avatar: 'https://picsum.photos/id/0/200/300',
             is_blocked: 'demoIsBlocked',

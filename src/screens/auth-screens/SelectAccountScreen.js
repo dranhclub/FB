@@ -2,6 +2,7 @@
 import { Thumbnail } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginRequestFromSelectAccountScreen } from '../../slices/authSlice';
@@ -34,7 +35,7 @@ function SelectAccountScreen({ navigation }) {
   const onLogin = () => {
     if (passwordPersist) {
       dispatch(loginRequestFromSelectAccountScreen({
-        phonenumber: phoneNumberPersist,
+        phoneNumber: phoneNumberPersist,
         password: passwordPersist,
         uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
       }));
@@ -63,7 +64,7 @@ function SelectAccountScreen({ navigation }) {
             </View>
           </TouchableOpacity>
         )}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("SignInScreen")}>
           <View style={styles.signInOther}>
             <View style={styles.viewIcon}>
               <Ionicons name="add" color={colors.blue800} size={24} />
@@ -91,8 +92,10 @@ function SelectAccountScreen({ navigation }) {
           <Text style={styles.bottomText}>TẠO TÀI KHOẢN FACEBOOK MỚI</Text>
         </View>
       </TouchableOpacity>
-      <Modal
+      <Spinner 
         visible={loadingLoginRequestFromSelectAccountScreen}
+      />
+      {/* <Modal
         transparent={true}
       >
         <View style={styles.modal}>
@@ -100,7 +103,7 @@ function SelectAccountScreen({ navigation }) {
             <ActivityIndicator size="small" color={colors.grey700} />
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }
