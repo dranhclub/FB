@@ -19,8 +19,15 @@ Xem hướng dẫn cài đặt theo mục `React Native CLI Quickstart` (không 
 
     Nếu đã cài android studio và set-up máy ảo rồi, thì chỉ cần chạy lệnh trên, máy ảo và metro server sẽ tự động bật lên và khởi động ứng dụng. Nếu muốn chạy trên thiết bị điện thoại, kết nối điện thoại vào và bật chế độ USB-debugging trên điện thoại lên, sau đó chạy lệnh trên.
 
-## Về việc giả lập API
-Để đơn giản cho việc chạy ứng dụng, ta sẽ deploy một cái API server giả lập lên heroku 
+## API Server
+API server được deploy trên heroku, sử dụng MongoDB Atlas làm Cloud database và Firebase làm Clound Messaging
 
-`https://hidden-refuge-96933.herokuapp.com/`
+Heroku git: https://git.heroku.com/hidden-refuge-96933.git  
 
+API URL: https://hidden-refuge-96933.herokuapp.com/  
+
+## Các chức năng đã hoàn thiện
+- Đăng ký
+- Đăng nhập
+- Gửi lời mời kết bạn
+  + Bao gồm thông báo (push notification)
