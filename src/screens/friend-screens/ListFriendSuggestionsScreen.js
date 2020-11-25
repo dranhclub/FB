@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
+import friendApi from '../../apis/friendApi';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ListFriendSuggestionsScreen() {
-  const DATA = [
+  const DATA2 = [
     {
       id: '1',
       name: 'Duy Drak',
@@ -41,6 +43,41 @@ export default function ListFriendSuggestionsScreen() {
       numMutualFriend: 14,
     },
   ];
+  const tokenMain = useSelector(state => state.auth.tokenMain);
+
+  const [data, setData] = useState([]);
+
+  const loadData = () => {
+    friendApi.getListFriendSuggestions({token: tokenMain})
+      .then(result=>{
+        let newData = result.data.map(value=>{
+          return {
+            id: `${value._id}`,
+            name: value.name,
+            avatar: { uri: `https://picsum.photos/seed/${value.name}/200/200` },
+            numMutualFriend: Math.trunc(0 + 50 * Math.random()),
+          };
+        });   
+        setData(newData);
+      })
+      .catch(err=>console.log(err));
+  }
+
+  const sendInvitation = (id) => {
+    const params = {
+      token: tokenMain,
+      userId: id
+    };
+    friendApi.requestFriend(params)
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => console.log(err));
+  }
+
+  useEffect(()=>{
+    loadData();
+  },[]);
 
   const Header = () => {
     return (
@@ -67,7 +104,7 @@ export default function ListFriendSuggestionsScreen() {
                 : null
             }
           </View>
-          <RoundedButton content='Kết bạn' backgroundColor={'#2979FF'} color='white'/>
+          <RoundedButton content='Kết bạn' backgroundColor={'#2979FF'} color='white' onPress={()=>sendInvitation(item.id)}/>
           <View style={{paddingVertical: 3}}></View>
           <RoundedButton content='Gỡ' backgroundColor={'#ECEFF1'} color='black'/>
         </View>
@@ -79,10 +116,10 @@ export default function ListFriendSuggestionsScreen() {
     <FlatList
       contentContainerStyle={styles.container}
       ListHeaderComponent={Header}
-      data={DATA}
+      data={data}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      onRefresh={()=>{}}
+      onRefresh={loadData}
       refreshing={false}
     />
   );

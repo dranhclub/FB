@@ -2,34 +2,22 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authApi from '../apis/authApi';
 import * as RES_CODE from './../constants/RES_CODE';
+import messaging from '@react-native-firebase/messaging';
 
-/*
-  Lấy token từ bộ nhớ trong ra, nếu có thì đăng nhập vào ứng dụng luôn
-*/
 export const bootstrapAsync = createAsyncThunk('auth/bootstrapAsync', async () => {
   console.log('Running bootstrapAsync');
   try {
-    let token, data;
-    token = await AsyncStorage.getItem('tokenPersist');
+    let token = await AsyncStorage.getItem('tokenPersist');
+    console.log("tokenPersit:", token);
+    let deviceToken = await messaging().getToken();
+    console.log("deviceToken:", deviceToken);
     const jsonData = await AsyncStorage.getItem('dataPersist');
-    data = jsonData !== null ? JSON.parse(jsonData) : null;
-    if (token) {
-      return {
-        key: 'TD', //Token + Data
-        token,
-        data,
-      };
-    } else {
-      if (data) {
-        return {
-          key: 'nTD', // none Token + Data
-          data,
-        };
-      } else {
-        return {
-          key: 'nTnD', // none Token, none Data
-        };
-      }
+    let data = jsonData !== null ? JSON.parse(jsonData) : null;
+    console.log("dataPersist:", data);
+    return {
+      token, 
+      deviceToken, 
+      data
     }
   } catch (error) {
     console.log('Error at bootstrapAsync:', error.message);
@@ -165,6 +153,7 @@ const auth = createSlice({
 
     tokenPersist: null,
     tokenMain: null,
+    deviceToken: null,
 
     haveDataPersist: false,
     usernamePersist: null,
@@ -193,6 +182,7 @@ const auth = createSlice({
     loadingChangeInfoAfterSignUpRequest: false,
 
     loadingLogoutRequest: false,
+
   },
   reducers: {
     saveUsernameCreated: (state, action) => {
@@ -209,7 +199,7 @@ const auth = createSlice({
     },
     resetSignInStatus: state => {
       state.signInStatus = null
-    }
+    },
   },
   extraReducers: {
     [bootstrapAsync.pending]: () => {
@@ -220,26 +210,43 @@ const auth = createSlice({
     },
     [bootstrapAsync.fulfilled]: (state, action) => {
       state.showSplash = false;
-      if (action.payload.key === 'TD') {
+      if (action.payload.token) {
         state.inApp = true;
         state.usernameMain = action.payload.data.username;
         state.phoneNumberMain = action.payload.data.phoneNumber;
         state.passwordMain = action.payload.data.password;
         state.avatarMain = action.payload.data.avatar;
+      }
+      if (action.payload.data) {
         state.haveDataPersist = true;
         state.usernamePersist = action.payload.data.username;
         state.phoneNumberPersist = action.payload.data.phoneNumber;
         state.passwordPersist = action.payload.data.password;
         state.avatarPersist = action.payload.data.avatar;
-      } else if (action.payload.key === 'nTD') {
-        state.haveDataPersist = true;
-        state.usernamePersist = action.payload.data.username;
-        state.phoneNumberPersist = action.payload.data.phoneNumber;
-        state.passwordPersist = action.payload.data.password;
-        state.avatarPersist = action.payload.data.avatar;
-      } // else if (action.payload.key === 'nTnD') {
-      // nothing
-      // }
+      }
+
+      state.deviceToken = action.payload.deviceToken;
+      
+      // if (action.payload.key === 'TD') {
+      //   state.inApp = true;
+      //   state.usernameMain = action.payload.data.username;
+      //   state.phoneNumberMain = action.payload.data.phoneNumber;
+      //   state.passwordMain = action.payload.data.password;
+      //   state.avatarMain = action.payload.data.avatar;
+      //   state.haveDataPersist = true;
+      //   state.usernamePersist = action.payload.data.username;
+      //   state.phoneNumberPersist = action.payload.data.phoneNumber;
+      //   state.passwordPersist = action.payload.data.password;
+      //   state.avatarPersist = action.payload.data.avatar;
+      // } else if (action.payload.key === 'nTD') {
+      //   state.haveDataPersist = true;
+      //   state.usernamePersist = action.payload.data.username;
+      //   state.phoneNumberPersist = action.payload.data.phoneNumber;
+      //   state.passwordPersist = action.payload.data.password;
+      //   state.avatarPersist = action.payload.data.avatar;
+      // } // else if (action.payload.key === 'nTnD') {
+      // // nothing
+      // // }
     },
 
 
@@ -400,6 +407,6 @@ export const {
   savePhoneNumberCreated,
   savePasswordCreated,
   resetCreateAccountStatus,
-  resetSignInStatus
+  resetSignInStatus,
 } = actions;
 export default reducer;

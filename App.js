@@ -3,16 +3,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainStackNavigator from './src/navigators/MainStackNavigator';
 import AuthStackNavigator from './src/navigators/AuthStackNavigator';
 import SplashScreen from './src/screens/SplashScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 import { bootstrapAsync } from './src/slices/authSlice';
+import messaging from '@react-native-firebase/messaging';
+import { Alert } from 'react-native';
+
 
 const App = () => {
   const showSplash = useSelector(state => state.auth.showSplash);
   const inApp = useSelector(state => state.auth.inApp);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(bootstrapAsync());
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   if (showSplash) {
     return <SplashScreen />;

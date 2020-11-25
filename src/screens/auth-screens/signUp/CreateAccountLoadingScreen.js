@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,16 +9,23 @@ import * as colors from './../../../constants/colors';
 function CreateAccountLoadingScreen({ navigation }) {
   const phoneNumberCreated = useSelector(state => state.auth.phoneNumberCreated);
   const passwordCreated = useSelector(state => state.auth.passwordCreated);
+  const usernameCreated = useSelector(state => state.auth.usernameCreated);
   const loadingSignUpRequest = useSelector(state => state.auth.loadingSignUpRequest);
   const createAccountStatus = useSelector(state => state.auth.createAccountStatus);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(signUpRequest({
-      phoneNumber: phoneNumberCreated,
-      password: passwordCreated,
-      uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
-    }));
+    async function signUp () {
+      // const deviceToken = await AsyncStorage.getItem('deviceToken');
+      dispatch(signUpRequest({
+        phoneNumber: phoneNumberCreated,
+        password: passwordCreated,
+        name: usernameCreated,
+        uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
+        // deviceToken: deviceToken
+      }));
+    };
+    signUp();
   }, []);
 
   useEffect(() => {

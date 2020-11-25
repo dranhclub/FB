@@ -11,21 +11,10 @@ const authApi = {
     return axiosClient.post(url, params);
   },
   getVerifyCode: params => {
-    // const url = `/link?${queryString.stringify(params)}`;
-    // return axiosClient.post(url);
-    // phoneNumber o
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          code: '1000',
-        });
-      }, 1000);
-    });
-    // 120s 1010, 1009
-    // sdt actived 1010
-    // sdt chua dk 1004 9995
+    return axiosClient.post('get_verify_code', params);
   },
   checkVerifyCode: params => {
+    return axiosClient.post('check_verify_code', params);
     // const url = `/link?${queryString.stringify(params)}`;
     // return axiosClient.post(url);
     // phoneNumber o

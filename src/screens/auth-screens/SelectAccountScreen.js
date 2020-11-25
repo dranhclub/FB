@@ -29,6 +29,7 @@ function SelectAccountScreen({ navigation }) {
   const usernamePersist = useSelector(state => state.auth.usernamePersist);
   const phoneNumberPersist = useSelector(state => state.auth.phoneNumberPersist);
   const passwordPersist = useSelector(state => state.auth.passwordPersist);
+  const deviceToken = useSelector(state => state.auth.deviceToken);
   const loadingLoginRequestFromSelectAccountScreen = useSelector(state => state.auth.loadingLoginRequestFromSelectAccountScreen);
   const dispatch = useDispatch();
 
@@ -38,6 +39,7 @@ function SelectAccountScreen({ navigation }) {
         phoneNumber: phoneNumberPersist,
         password: passwordPersist,
         uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
+        deviceToken: deviceToken
       }));
     } else {
 

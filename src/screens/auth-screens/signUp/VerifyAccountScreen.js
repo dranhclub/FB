@@ -61,7 +61,7 @@ function VerifyAccountScreen({ navigation }) {
         {errorMsg}
         {checkVerifyCodeRequestStatus === 'FAILED' && (
           <Text style={styles.error}>
-            Mã xác thực không đúng.
+            Mã xác thực không đúng. (Ứng dụng chưa gửi SMS được nên tạm thời mã xác thực là số điện thoại)
           </Text>
         )}
       </View>

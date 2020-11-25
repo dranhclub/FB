@@ -14,6 +14,7 @@ function SignInScreen({navigation}) {
   const dispatch = useDispatch();
   const loadingLoginRequestFromSignInScreen = useSelector(state => state.auth.loadingLoginRequestFromSignInScreen);
   const signInStatus = useSelector(state => state.auth.signInStatus);
+  const deviceToken = useSelector(state => state.auth.deviceToken);
 
   useEffect(()=>{
     dispatch(resetSignInStatus());
@@ -65,7 +66,8 @@ function SignInScreen({navigation}) {
   const onSubmit = (data) => {
     dispatch(loginRequestFromSignInScreen({
       phoneNumber: data.phoneNumber,
-      password: data.password
+      password: data.password,
+      deviceToken: deviceToken
     }));
   }
 
