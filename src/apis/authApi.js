@@ -2,13 +2,19 @@ import queryString from 'query-string';
 import axiosClient from './axiosClient';
 
 const authApi = {
-  signUp: params => {
+  signUp: async params => {
     const url = 'signup';
-    return axiosClient.post(url, params);
+    console.log("Send signup request:", params);
+    const response = await axiosClient.post(url, params);
+    console.log("Received signup response:", response);
+    return response;
   },
-  login: params => {
+  login: async params => {
     const url = 'login';
-    return axiosClient.post(url, params);
+    console.log("Send login request:", params);
+    const response = await axiosClient.post(url, params);
+    console.log("Received login response:", response);
+    return response;
   },
   getVerifyCode: params => {
     return axiosClient.post('get_verify_code', params);

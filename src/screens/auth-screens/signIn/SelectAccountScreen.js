@@ -1,71 +1,82 @@
-/* eslint-disable prettier/prettier */
 import { Thumbnail } from 'native-base';
-import React from 'react';
-import { ActivityIndicator, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequestFromSelectAccountScreen } from '../../slices/authSlice';
-import * as colors from './../../constants/colors';
+import { loginRequest, removeAccountThunk } from '../../../slices/authSlice';
+import * as colors from '../../../constants/colors';
+
+const defaultAvatar = require('../../../imgs/default-avatar.jpg');
 
 function SelectAccountScreen({ navigation }) {
-  const haveDataPersist = useSelector(state => state.auth.haveDataPersist);
-  const avatarPersist = useSelector(state => state.auth.avatarPersist);
-  const avatarComponent = avatarPersist ? (
-    <>
-      <Thumbnail
-        source={{uri: avatarPersist}}
-        style={styles.avatar}
-      />
-    </>
-  ) : (
-      <>
-        <Thumbnail
-          source={require('../../imgs/default-avatar.jpg')}
-          style={styles.avatar}
-        />
-      </>
-    );
-  const usernamePersist = useSelector(state => state.auth.usernamePersist);
-  const phoneNumberPersist = useSelector(state => state.auth.phoneNumberPersist);
-  const passwordPersist = useSelector(state => state.auth.passwordPersist);
-  const deviceToken = useSelector(state => state.auth.deviceToken);
-  const loadingLoginRequestFromSelectAccountScreen = useSelector(state => state.auth.loadingLoginRequestFromSelectAccountScreen);
+  const savedUsers = useSelector(state => state.auth.savedUsers);
+  const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
 
-  const onLogin = () => {
-    if (passwordPersist) {
-      dispatch(loginRequestFromSelectAccountScreen({
-        phoneNumber: phoneNumberPersist,
-        password: passwordPersist,
-        uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
-        deviceToken: deviceToken
-      }));
-    } else {
+  useEffect(()=>{
+    if (savedUsers.length == 0) {
+      navigation.navigate("SignInScreen");
+    }
+  }, [navigation]);
 
+  const onLogin = (choosenAccount) => {
+    if (choosenAccount?.password) {
+      dispatch(loginRequest({
+        phoneNumber: choosenAccount.phoneNumber,
+        password: choosenAccount.password,
+      }));
     }
   };
+
+  const removeAccount = (account) => {
+    dispatch(removeAccountThunk(account));
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Image
-          source={require('../../imgs/logoFB.jpg')}
+          source={require('../../../imgs/logoFB.jpg')}
           style={styles.facebookIcon}
         />
-        {haveDataPersist && (
-          <TouchableOpacity
-            onPress={onLogin}
-          >
-            <View style={styles.signInPersist}>
-              {avatarComponent}
-              <Text style={styles.username}>
-                {usernamePersist}
-              </Text>
-              <Ionicons name="ellipsis-vertical" color={colors.grey900} size={20} />
-            </View>
-          </TouchableOpacity>
-        )}
+        <View style={{marginTop: 20}}></View>
+        {
+          /* Danh sách các tài khoản đã lưu mật khẩu trên thiết bị */
+          savedUsers?.map((item, index) => {
+            if (index > 3) return null;
+            let avatar = item.avatar;
+            if (avatar === '-1') {
+              avatar = defaultAvatar;
+            }
+            return (
+              <View style={styles.signInPersist} key={index}>
+                <TouchableOpacity onPress={() => onLogin(item)} style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Thumbnail source={avatar} style={styles.avatar} />
+                  <Text style={styles.username}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { 
+                  Alert.alert(
+                    'Xoá tài khoản này?',
+                    'Xoá tài khoản này khỏi danh sách',
+                    [
+                      {
+                        text: 'Xoá',
+                        onPress: () => {removeAccount(item)}
+                      }
+                    ], 
+                    { 
+                      cancelable: true 
+                    }
+                    )
+                }}>
+                  <Ionicons name="ellipsis-vertical" color={colors.grey900} size={20} />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         <TouchableOpacity onPress={()=>navigation.navigate("SignInScreen")}>
           <View style={styles.signInOther}>
             <View style={styles.viewIcon}>
@@ -95,17 +106,8 @@ function SelectAccountScreen({ navigation }) {
         </View>
       </TouchableOpacity>
       <Spinner 
-        visible={loadingLoginRequestFromSelectAccountScreen}
+        visible={loading}
       />
-      {/* <Modal
-        transparent={true}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalView}>
-            <ActivityIndicator size="small" color={colors.grey700} />
-          </View>
-        </View>
-      </Modal> */}
     </View>
   );
 }
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   signInPersist: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 20,
+    marginTop: 0,
     paddingHorizontal: 32,
     paddingVertical: 4,
   },

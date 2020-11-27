@@ -5,10 +5,10 @@ import { Dimensions } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Post from '../../components/Post';
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 const exampleCoverImage = require('../../imgs/example.jpg');
-const exampleAvatar = require('../../imgs/default-avatar.jpg');
 
 export default function ProfileScreen({navigation}) {
 
@@ -44,6 +44,10 @@ export default function ProfileScreen({navigation}) {
       name: 'Huy Hoàng'
     },
   ];
+  let avatar = useSelector(state => state.auth.currentUser.avatar);
+  if (avatar === '-1') {
+    avatar = require('../../imgs/default-avatar.jpg');
+  }
   const featuredPhotos = [
     {uri: 'https://picsum.photos/seed/examplePhoto1/200/200'},
     {uri: 'https://picsum.photos/seed/examplePhoto2/200/200'},
@@ -63,7 +67,7 @@ export default function ProfileScreen({navigation}) {
         <View style={styles.wrapper}>
           <Image style={styles.coverImage} source={exampleCoverImage}></Image>
           <View style={{justifyContent: 'space-around', flexDirection: 'row'}}>
-            <Image style={styles.avatarImage} source={exampleAvatar}></Image>
+            <Image style={styles.avatarImage} source={avatar}></Image>
           </View>
           <View style={{justifyContent: 'space-around', flexDirection: 'row'}}>
             <Text style={{fontSize: 25, fontWeight: 'bold'}}>Huy Hoàng</Text>
@@ -145,7 +149,7 @@ export default function ProfileScreen({navigation}) {
       {/* Walls */}
       <Post
         displayName='Huy Hoàng'
-        avatar={exampleAvatar}
+        avatar={avatar}
         time='Vừa xong'
         key='postId1'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
@@ -157,7 +161,7 @@ export default function ProfileScreen({navigation}) {
       />
       <Post
         displayName='Huy Hoàng'
-        avatar={exampleAvatar}
+        avatar={avatar}
         time='Vừa xong'
         key='postId2'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
@@ -170,7 +174,7 @@ export default function ProfileScreen({navigation}) {
       />
       <Post
         displayName='Huy Hoàng'
-        avatar={exampleAvatar}
+        avatar={avatar}
         time='Vừa xong'
         key='postId3'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'
@@ -184,7 +188,7 @@ export default function ProfileScreen({navigation}) {
       />
       <Post
         displayName='Huy Hoàng'
-        avatar={exampleAvatar}
+        avatar={avatar}
         time='Vừa xong'
         key='postId4'
         text='Fugiat aliqua consectetur duis amet non tempor. Exercitation aute laboris incididunt excepteur qui ea enim irure reprehenderit exercitation. Mollit consectetur ullamco nostrud in deserunt cupidatat anim id mollit adipisicing exercitation. Adipisicing incididunt esse Lorem sint officia ad tempor. Eiusmod ad veniam pariatur aliqua qui ipsum tempor deserunt. Ullamco sunt veniam duis do magna Lorem veniam. Laborum aliqua commodo cillum ut ut enim pariatur.'

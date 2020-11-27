@@ -2,9 +2,8 @@ import React from 'react';
 import { Text, View,  StyleSheet, Image, FlatList } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
 import Post from '../../components/Post';
-
-const exampleAvatar = require('../../imgs/default-avatar.jpg');
 
 const DATA = [
   {
@@ -88,12 +87,17 @@ const DATA = [
 
 export default function NewfeedScreen({ navigation }) {
 
+  let avatar = useSelector(state => state.auth.currentUser.avatar);
+  if (avatar === '-1') {
+    avatar = require('../../imgs/default-avatar.jpg');
+  }
+
   /* Khung "Bạn đang nghĩ gì?" */
   const CreatePostView = () => {
     return (
       <View style={styles.createPostView}>
         <View style={styles.createPostTopWrapper}>
-          <Image source={exampleAvatar} style={styles.avatar} />
+          <Image source={avatar} style={styles.avatar} />
           <View style={styles.whatDoUThinkBtn}>
             <TouchableHighlight onPress={() => navigation.navigate('PostScreen')} underlayColor={'#ccc'}>
               <Text style={{ fontSize: 18 }}>Bạn đang nghĩ gì?</Text>

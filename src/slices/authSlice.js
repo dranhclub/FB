@@ -1,23 +1,45 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import authApi from '../apis/authApi';
 import * as RES_CODE from './../constants/RES_CODE';
 import messaging from '@react-native-firebase/messaging';
 
-export const bootstrapAsync = createAsyncThunk('auth/bootstrapAsync', async () => {
+export const bootstrapAsync = createAsyncThunk('auth/bootstrapAsync', async (params, {dispatch, getState}) => {
   console.log('Running bootstrapAsync');
   try {
-    let token = await AsyncStorage.getItem('tokenPersist');
-    console.log("tokenPersit:", token);
-    let deviceToken = await messaging().getToken();
-    console.log("deviceToken:", deviceToken);
-    const jsonData = await AsyncStorage.getItem('dataPersist');
-    let data = jsonData !== null ? JSON.parse(jsonData) : null;
-    console.log("dataPersist:", data);
-    return {
-      token, 
-      deviceToken, 
-      data
+    // Lấy thông tin từ tài khoản hiện tại
+    let temp = await AsyncStorage.getItem('currentUser');
+    const currentUser = temp !== null ? JSON.parse(temp) : null;
+    console.log("currentUser:", currentUser);
+
+    // Lấy thông tin về các tài khoản đã từng đăng nhập
+    temp = await AsyncStorage.getItem('savedUsers');
+    const savedUsers = temp !== null ? JSON.parse(temp) : [];
+    console.log("savedUsers:", savedUsers);
+
+    if (currentUser) {
+      await dispatch(loginRequest({
+        phoneNumber: currentUser.phoneNumber,
+        password: currentUser.password
+      }));
+      if (getState().auth.loggedIn) {
+        return {
+          key: 'HAS CURRENT, LOGIN SUCCESS',
+          currentUser: currentUser
+        };
+      } else {
+        return {key: 'HAS CURRENT, LOGIN FAILED'};
+      }
+    } else if (savedUsers.length > 0) {
+      return {
+        key: 'HAS NOT CURRENT, HAS HISTORY',
+        savedUsers: savedUsers
+      };
+    } else {
+      return {
+        key: 'HAS NOT CURRENT, HAS NOT HISTORY',
+        savedUsers: []
+      }
     }
   } catch (error) {
     console.log('Error at bootstrapAsync:', error.message);
@@ -33,53 +55,38 @@ export const signUpRequest = createAsyncThunk('auth/signUpRequest', async params
   }
 });
 
-export const loginRequestFromSignInAlertScreen = createAsyncThunk('auth/loginRequestFromSignInAlertScreen', async params => {
+export const saveAccount = createAsyncThunk('auth/saveAccount', async currentUser => {
   try {
-    const response = await authApi.login(params);
-    return response;
-  } catch (error) {
-    console.log('Error at loginRequestFromSignInAlertScreen:', error.message);
-  }
-});
+    // Save current
+    AsyncStorage.setItem('currentUser', JSON.stringify(currentUser));
+    console.log('saved currentUser:', currentUser);
 
-export const saveTokenDataFromSignInAlertScreen = createAsyncThunk('auth/saveDataFromSignInAlertScreen', async params => {
-  try {
-    await AsyncStorage.setItem('tokenPersist', params.token);
-    let data;
-    if (params.savePassword) {
-      data = {
-        username: params.username,
-        phoneNumber: params.phoneNumber,
-        password: params.password,
-      };
+    // Add current to history
+    const temp = await AsyncStorage.getItem('savedUsers');
+    let savedUsers = temp !== null ? JSON.parse(temp) : [];
+    if (savedUsers.length == 0) {
+      savedUsers = [currentUser];
     } else {
-      data = {
-        username: params.username,
-        phoneNumber: params.phoneNumber,
-      };
+      let existed = false;
+      for (let i = 0; i < savedUsers.length; i++) {
+        if (savedUsers[i].phoneNumber === currentUser.phoneNumber) {
+          existed = true;
+          break;
+        }
+      }
+      if (!existed) {
+        savedUsers.push(currentUser);
+      }
     }
-    const jsonData = JSON.stringify(data);
-    await AsyncStorage.setItem('dataPersist', jsonData);
-    if (params.savePassword) {
-      return {
-        key: true,
-        data: {
-          username: params.username,
-          phoneNumber: params.phoneNumber,
-          password: params.password,
-        },
-      };
-    } else {
-      return {
-        key: false,
-        data: {
-          username: params.username,
-          phoneNumber: params.phoneNumber,
-        },
-      };
+    AsyncStorage.setItem('savedUsers', JSON.stringify(savedUsers));
+    console.log('saved savedUsers:', savedUsers);
+
+    return {
+      currentUser,
+      savedUsers
     }
   } catch (error) {
-    console.log('Error at saveTokenDataFromSignInAlertScreen:', error.message);
+    console.log('Error at save account:', error.message);
   }
 });
 
@@ -92,51 +99,64 @@ export const checkVerifyCodeRequest = createAsyncThunk('auth/checkVerifyCodeRequ
   }
 });
 
-export const changeInfoAfterSignUpRequest = createAsyncThunk('auth/changeInfoAfterSignUpRequest', async params => {
+export const changeInfoAfterSignUpRequest = createAsyncThunk('auth/changeInfoAfterSignUpRequest', async (params) => {
   try {
     const response = await authApi.changeInfoAfterSignUp(params);
-    const jsonData = await AsyncStorage.getItem('dataPersist');
-    const data = JSON.parse(jsonData);
-    const newData = {
-      ...data,
-      avatar: response.data.avatar,
-    };
-    const newJsonData = JSON.stringify(newData);
-    await AsyncStorage.setItem('dataPersist', newJsonData);
     return response;
   } catch (error) {
     console.log('Error at changeInfoAfterSignUpRequest:', error.message);
   }
 });
 
+export const loginRequest = createAsyncThunk('auth/loginRequest', async (params, {dispatch}) => {
+  // lấy ra device token
+  let deviceToken = await messaging().getToken();
+  console.log("deviceToken:", deviceToken);
+  const response = await authApi.login({
+    ...params,
+    deviceToken,
+    uuid: `${Math.trunc(1000 + 9000 * Math.random())}`,
+  });
+
+  if (response.code === RES_CODE.OK) {
+    let currentUser = response.data;
+    dispatch(saveAccount(currentUser));
+  }
+
+  return response;
+});
+
 export const logoutRequest = createAsyncThunk('auth/logoutRequest', async params => {
   try {
-    await AsyncStorage.removeItem('tokenPersist');
     const response = await authApi.logout(params);
+    await AsyncStorage.removeItem('currentUser');
+    console.log("LOG OUT, removed currentUser");
     return response;
   } catch (error) {
     console.log('Error at logoutRequest:', error.message);
   }
 });
 
-export const loginRequestFromSignInScreen = createAsyncThunk('auth/loginRequestFromSignInScreen', async params => {
+export const removeAccountThunk = createAsyncThunk('auth/removeAccountThunk', async account => {
   try {
-    console.log("Login request:", params);
-    const response = await authApi.login(params);
-    console.log("Login response:", response);
-
-    return response;
+    const temp = await AsyncStorage.getItem('savedUsers');
+    let savedUsers = JSON.parse(temp);
+    let id = -1;
+    console.log("saved usersa d a", savedUsers);
+    savedUsers.forEach((value, index) => {
+      console.log('for each',index,value);
+      if (value.phoneNumber === account.phoneNumber) {
+        console.log('found one');
+        id = index;
+      }
+    });
+    console.log("user to remove:", id);
+    savedUsers.splice(id, 1);
+    await AsyncStorage.setItem('savedUsers', JSON.stringify(savedUsers));
+    console.log('removed account, accounts left:', savedUsers);
+    return savedUsers;
   } catch (error) {
-    console.log('Error at loginRequestFromSignInScreen:', error.message);
-  }
-});
-
-export const loginRequestFromSelectAccountScreen = createAsyncThunk('auth/loginRequestFromSelectAccountScreen', async params => {
-  try {
-    const response = await authApi.login(params);
-    return response;
-  } catch (error) {
-    console.log('Error at loginRequestFromSelectAccountScreen:', error.message);
+    console.log('Error at remove account thunk', error);
   }
 });
 
@@ -146,47 +166,29 @@ const auth = createSlice({
     showSplash: true,
     inApp: false,
 
-    usernameMain: null,
-    phoneNumberMain: null,
-    passwordMain: null,
-    avatarMain: null,
-
-    tokenPersist: null,
-    tokenMain: null,
-    deviceToken: null,
-
-    haveDataPersist: false,
-    usernamePersist: null,
-    phoneNumberPersist: null,
-    passwordPersist: null,
-    avatarPersist: null,
-
+    loggedIn: false,
+    currentUser: null,
+    savedUsers: [],
+ 
     usernameCreated: null,
     birthdayCreated: null,
     phoneNumberCreated: null,
     passwordCreated: null,
     avatarCreated: null,
-
-    loadingLoginRequestFromSignInScreen: false,
-    loadingLoginRequestFromSelectAccountScreen: false,
-
-    loadingSignUpRequest: false,
-    createAccountStatus: null,
-    signInStatus: null,
-
-    loadingLoginRequestFromSignInAlertScreen: true,
-
-    loadingCheckVerifyCodeRequest: false,
+    
+    signUpError: null,
+    signInError: null,
+    
     checkVerifyCodeRequestStatus: null,
-
-    loadingChangeInfoAfterSignUpRequest: false,
-
-    loadingLogoutRequest: false,
-
+    
+    loading: false,
   },
   reducers: {
     saveUsernameCreated: (state, action) => {
       state.usernameCreated = action.payload.usernameCreated;
+    },
+    saveBirthdayCreated: (state, action) => {
+      state.birthdayCreated = action.payload.birthdayCreated;
     },
     savePhoneNumberCreated: (state, action) => {
       state.phoneNumberCreated = action.payload.phoneNumberCreated;
@@ -194,209 +196,137 @@ const auth = createSlice({
     savePasswordCreated: (state, action) => {
       state.passwordCreated = action.payload.passwordCreated;
     },
-    resetCreateAccountStatus: state => {
-      state.createAccountStatus = null;
+    clearSignUpError: state => {
+      state.signUpError = null;
     },
-    resetSignInStatus: state => {
-      state.signInStatus = null
+    clearSignInError: state => {
+      state.signInError = null
     },
   },
   extraReducers: {
-    [bootstrapAsync.pending]: () => {
-
-    },
-    [bootstrapAsync.rejected]: () => {
-
+    /* Bootstrap Async */
+    [bootstrapAsync.pending]: (state) => {
+      state.showSplash = true;
     },
     [bootstrapAsync.fulfilled]: (state, action) => {
       state.showSplash = false;
-      if (action.payload.token) {
-        state.inApp = true;
-        state.usernameMain = action.payload.data.username;
-        state.phoneNumberMain = action.payload.data.phoneNumber;
-        state.passwordMain = action.payload.data.password;
-        state.avatarMain = action.payload.data.avatar;
+      switch(action.payload.key) {
+        case 'HAS CURRENT, LOGIN SUCCESS':
+          state.inApp = true;
+          state.loggedIn = true;
+          state.currentUser = action.payload.currentUser;
+          break;
+        case 'HAS CURRENT, LOGIN FAILED':
+          // Hiện màn hình nhập sđt, mật khẩu
+          state.loggedIn = false;
+          state.currentUser = action.payload.currentUser;
+          break;
+        case 'HAS NOT CURRENT, HAS HISTORY':
+          // show select account screen
+          state.loggedIn = false;
+          state.savedUsers = action.payload.savedUsers;
+          break;
+        case 'HAS NOT CURRENT, HAS NOT HISTORY':
+          // show sign in screen
+          state.loggedIn = false;
+          break;
+        default:
+          throw "bootstrap key invalid";
       }
-      if (action.payload.data) {
-        state.haveDataPersist = true;
-        state.usernamePersist = action.payload.data.username;
-        state.phoneNumberPersist = action.payload.data.phoneNumber;
-        state.passwordPersist = action.payload.data.password;
-        state.avatarPersist = action.payload.data.avatar;
-      }
-
-      state.deviceToken = action.payload.deviceToken;
-      
-      // if (action.payload.key === 'TD') {
-      //   state.inApp = true;
-      //   state.usernameMain = action.payload.data.username;
-      //   state.phoneNumberMain = action.payload.data.phoneNumber;
-      //   state.passwordMain = action.payload.data.password;
-      //   state.avatarMain = action.payload.data.avatar;
-      //   state.haveDataPersist = true;
-      //   state.usernamePersist = action.payload.data.username;
-      //   state.phoneNumberPersist = action.payload.data.phoneNumber;
-      //   state.passwordPersist = action.payload.data.password;
-      //   state.avatarPersist = action.payload.data.avatar;
-      // } else if (action.payload.key === 'nTD') {
-      //   state.haveDataPersist = true;
-      //   state.usernamePersist = action.payload.data.username;
-      //   state.phoneNumberPersist = action.payload.data.phoneNumber;
-      //   state.passwordPersist = action.payload.data.password;
-      //   state.avatarPersist = action.payload.data.avatar;
-      // } // else if (action.payload.key === 'nTnD') {
-      // // nothing
-      // // }
     },
 
-
-
+    /* Sign Up Request */
     [signUpRequest.pending]: state => {
-      state.loadingSignUpRequest = true;
-    },
-    [signUpRequest.rejected]: () => {
-
+      state.loading = true;
     },
     [signUpRequest.fulfilled]: (state, action) => {
-      state.loadingSignUpRequest = false;
-      if (action.payload.code === RES_CODE.OK) {
-        state.createAccountStatus = 'SUCCESS';
-      } else {
-        state.createAccountStatus = 'FAILED';
+      state.loading = false;
+      if (action.payload.code !== RES_CODE.OK) {
+        signUpError = {message: action.payload.message};
       }
     },
 
-    [loginRequestFromSignInAlertScreen.pending]: () => {
-
+    /* Save account */
+    [saveAccount.pending]: (state)=>{
+      state.loading = true;
     },
-    [loginRequestFromSignInAlertScreen.rejected]: () => {
-
-    },
-    [loginRequestFromSignInAlertScreen.fulfilled]: (state, action) => {
-      state.loadingLoginRequestFromSignInAlertScreen = false;
-      if (action.payload.code === RES_CODE.OK) {
-        state.tokenMain = action.payload.data.token;
-        state.usernameMain = action.payload.data.username;
-      }
+    [saveAccount.fulfilled]: (state, action)=>{
+      state.loading = false;
+      state.currentUser = action.payload.currentUser;
+      state.savedUsers = action.payload.savedUsers;
     },
 
-    [saveTokenDataFromSignInAlertScreen.pending]: () => {
-
-    },
-    [saveTokenDataFromSignInAlertScreen.rejected]: () => {
-
-    },
-    [saveTokenDataFromSignInAlertScreen.fulfilled]: (state, action) => {
-      state.haveDataPersist = true;
-      state.usernamePersist = action.payload.data.username;
-      state.phoneNumberPersist = action.payload.data.phoneNumber;
-      if (action.payload.key) {
-        state.passwordPersist = action.payload.data.password;
-      } else {
-        state.passwordPersist = null;
-      }
-    },
-
+    /* Check Verify Code Request */
     [checkVerifyCodeRequest.pending]: (state) => {
       state.loadingCheckVerifyCodeRequest = true;
-    },
-    [checkVerifyCodeRequest.rejected]: () => {
-
     },
     [checkVerifyCodeRequest.fulfilled]: (state, action) => {
       state.loadingCheckVerifyCodeRequest = false;
       if (action.payload.code === RES_CODE.OK) {
         state.checkVerifyCodeRequestStatus = 'SUCCESS';
-        state.tokenMain = action.payload.data.token;
+        state.token = action.payload.data.token;
       } else {
         state.checkVerifyCodeRequestStatus = 'FAILED';
       }
     },
 
+    /* Change Info After Sign Up Request */
     [changeInfoAfterSignUpRequest.pending]: (state) => {
-      state.loadingChangeInfoAfterSignUpRequest = true;
-    },
-    [changeInfoAfterSignUpRequest.rejected]: () => {
-
+      state.loading = true;
     },
     [changeInfoAfterSignUpRequest.fulfilled]: (state, action) => {
-      state.loadingChangeInfoAfterSignUpRequest = false;
+      state.loading = false;
       if (action.payload.code === RES_CODE.OK) {
         state.inApp = true;
-        state.avatarMain = action.payload.data.avatar;
-        state.usernameMain = action.payload.data.username;
-        state.phoneNumberMain = action.payload.data.phoneNumber;
-        // is_blocked
-        // online
-        state.avatarPersist = action.payload.data.avatar;
+        state.currentUser = action.payload.data;
       } else {
-
+        
       }
     },
-    [loginRequestFromSignInScreen.pending]: (state) => {
-      state.loadingLoginRequestFromSignInScreen = true;
-    },
-    [loginRequestFromSignInScreen.rejected]: () => {
 
+    /* Login Request */
+    [loginRequest.pending]: (state) => {
+      state.loading = true;
     },
-    [loginRequestFromSignInScreen.fulfilled]: (state, action) => {
-      state.loadingLoginRequestFromSignInScreen = false;
-      switch(action.payload.code) {
-        case RES_CODE.OK:
-          state.inApp = true;
-          state.usernameMain = action.payload.data.username;
-          state.tokenMain = action.payload.data.token;
-          // AsyncStorage
-          break;
-        case RES_CODE.WRONG_PASSWORD:
-          state.signInStatus = {
-            error: {
-              message: action.payload.message
-            }
-          }
-          break;
-        case RES_CODE.PHONE_NUMBER_UNMATCH:
-          state.signInStatus = {
-            error: {
-              message: action.payload.message
-            }
-          }
-          break;
-      }
+    [loginRequest.rejected]: (state) => {
+      state.loading = false;
     },
-    [loginRequestFromSelectAccountScreen.pending]: (state) => {
-      state.loadingLoginRequestFromSelectAccountScreen = true;
-    },
-    [loginRequestFromSelectAccountScreen.rejected]: () => {
-
-    },
-    [loginRequestFromSelectAccountScreen.fulfilled]: (state, action) => {
-      state.loadingLoginRequestFromSelectAccountScreen = false;
-      if (action.payload.code === RES_CODE.OK) {
+    [loginRequest.fulfilled]: (state, action) => {
+      const response = action.payload;
+      state.loading = false;
+      if (response.code === RES_CODE.OK) {
         state.inApp = true;
-        state.usernameMain = action.payload.data.username;
-        state.tokenMain = action.payload.data.token;
-        // AsyncStorage
+        state.loggedIn = true;
+        state.currentUser = response.data;
+      } else if (response.code === RES_CODE.PHONE_NUMBER_UNMATCH || response.code === RES_CODE.WRONG_PASSWORD) {
+        state.signInError = { message: response.data.message };
+      } else {
+        throw "Unknown response code";
       }
     },
 
+    /* Logout Request */
     [logoutRequest.pending]: (state) => {
-      state.loadingLogoutRequest = true;
-    },
-    [logoutRequest.rejected]: () => {
-
+      state.loading = true;
     },
     [logoutRequest.fulfilled]: (state, action) => {
-      state.loadingLogoutRequest = false;
+      state.loading = false;
       state.inApp = false;
-      state.tokenMain = null;
-      state.tokenPersist = null;
+      state.currentUser = null;
       if (action.payload.code === RES_CODE.OK) {
 
       } else {
 
       }
     },
+
+    [removeAccountThunk.pending]: state => {
+      state.loading = true;
+    },
+    [removeAccountThunk.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.savedUsers = action.payload;
+    }
   },
 });
 
@@ -404,9 +334,10 @@ const { reducer, actions } = auth;
 
 export const {
   saveUsernameCreated,
+  saveBirthdayCreated,
   savePhoneNumberCreated,
   savePasswordCreated,
-  resetCreateAccountStatus,
-  resetSignInStatus,
+  clearSignUpError,
+  clearSignInError,
 } = actions;
 export default reducer;

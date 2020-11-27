@@ -5,10 +5,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import {logoutRequest} from '../slices/authSlice';
 
-const exampleAvatar = require('../imgs/default-avatar.jpg');
-
 export default function MenuScreen({navigation}) {
-  
+
+  const currentUser = useSelector(state => state.auth.currentUser);
+
+  let avatar = useSelector(state => state.auth.currentUser.avatar);
+  if (avatar === '-1') {
+    avatar = require('../imgs/default-avatar.jpg');
+  }
+
   const dispatch = useDispatch();
   const signOut = () => {
     dispatch(logoutRequest());
@@ -28,9 +33,9 @@ export default function MenuScreen({navigation}) {
         </View>
         <TouchableOpacity onPress={()=>{navigation.navigate('ProfileScreen')}}>
           <View style={{flexDirection:'row', marginBottom: 10}}>
-            <Image source={exampleAvatar} style={{width: 50, height: 50, borderRadius: 25}} />
+            <Image source={avatar} style={{width: 50, height: 50, borderRadius: 25}} />
             <View style={{paddingLeft: 10}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Huy Hoàng</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold'}}>{currentUser.name}</Text>
               <Text>Xem trang cá nhân của bạn</Text>
             </View>
           </View>

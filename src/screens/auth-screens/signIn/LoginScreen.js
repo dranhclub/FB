@@ -5,7 +5,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Button, Text, TextInput, View, StyleSheet, TouchableOpacity,Dimensions, Keyboard} from 'react-native'
 import Image from 'react-native-scalable-image';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {AuthContext, LoginContext} from '../../contexts/MyContexts';
+import {AuthContext, LoginContext} from '../../../contexts/MyContexts';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export function WarningComponent({text}) {
@@ -17,7 +17,7 @@ export function WarningComponent({text}) {
   );
 }
 
-const coverImage = require('../../imgs/login-img.png');
+const coverImage = require('../../../imgs/login-img.png');
 
 export default function LoginScreen ({navigation}) {
   const [phoneNumber, setPhonenumber] = React.useState('');

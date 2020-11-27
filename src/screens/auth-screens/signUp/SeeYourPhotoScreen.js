@@ -7,14 +7,14 @@ import { changeInfoAfterSignUpRequest } from '../../../slices/authSlice';
 import * as colors from './../../../constants/colors';
 
 function SeeYourPhotoScreen({ navigation, route }) {
-  const tokenMain = useSelector(state => state.auth.tokenMain);
+  const token = useSelector(state => state.auth.currentUser.token);
   const usernameCreated = useSelector(state => state.auth.usernameCreated);
-  const loadingChangeInfoAfterSignUpRequest = useSelector(state => state.auth.loadingChangeInfoAfterSignUpRequest);
+  const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
 
   const onSave = () => {
     dispatch(changeInfoAfterSignUpRequest({
-      token: tokenMain,
+      token: token,
       username: usernameCreated,
       avatar: route.params,
     }));
@@ -45,16 +45,7 @@ function SeeYourPhotoScreen({ navigation, route }) {
         style={styles.image}
         source={route.params}
       />
-      <Modal
-        visible={loadingChangeInfoAfterSignUpRequest}
-        transparent={true}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalView}>
-            <ActivityIndicator size="small" color={colors.grey700} />
-          </View>
-        </View>
-      </Modal>
+      <Spinner visible={loading} />
     </View>
   );
 }

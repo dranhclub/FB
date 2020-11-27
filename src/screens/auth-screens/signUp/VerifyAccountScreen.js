@@ -13,9 +13,9 @@ import * as colors from './../../../constants/colors';
 function VerifyAccountScreen({ navigation }) {
   const { control, handleSubmit, errors } = useForm();
   const phoneNumberCreated = useSelector(state => state.auth.phoneNumberCreated);
-  const loadingCheckVerifyCodeRequest = useSelector(state => state.auth.loadingCheckVerifyCodeRequest);
+  const loading = useSelector(state => state.auth.loading);
   const checkVerifyCodeRequestStatus = useSelector(state => state.auth.checkVerifyCodeRequestStatus);
-  const tokenMain = useSelector(state => state.auth.tokenMain);
+  const token = useSelector(state => state.auth.currentUser.token);
   const dispatch = useDispatch();
 
   let errorMsg = null;
@@ -44,7 +44,7 @@ function VerifyAccountScreen({ navigation }) {
     if (checkVerifyCodeRequestStatus === 'SUCCESS') {
       const storeData = async () => {
         try {
-          await AsyncStorage.setItem('tokenPersist', tokenMain);
+          await AsyncStorage.setItem('token', token);
         } catch (error) {
           console.log('Error at VerifyAccountScreen useEffect:', error.message);
         }
@@ -106,16 +106,7 @@ function VerifyAccountScreen({ navigation }) {
           </View>
         </TouchableOpacity>
       </View>
-      <Modal
-        visible={loadingCheckVerifyCodeRequest}
-        transparent={true}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalView}>
-            <ActivityIndicator size="small" color={colors.grey700} />
-          </View>
-        </View>
-      </Modal>
+      <Spinner visible={loading} />
     </View>
   );
 }

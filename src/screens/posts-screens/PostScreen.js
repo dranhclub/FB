@@ -4,14 +4,18 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const defaultAvatar = require('../../imgs/default-avatar.jpg');
+import { useSelector } from 'react-redux';
 
 export default function PostScreen({navigation, route}) {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState();
   const [description, setDescription] = useState('');
   const [emotion, setEmotion] = useState();
+
+  let avatar = useSelector(state => state.auth.currentUser.avatar);
+  if (avatar === '-1') {
+    avatar = require('../../imgs/default-avatar.jpg');
+  }
 
   React.useEffect(()=>{
     if (route.params) {
@@ -213,7 +217,7 @@ export default function PostScreen({navigation, route}) {
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {/* header */}
         <View style={styles.header}>
-          <Image style={styles.avatar} source={defaultAvatar} />
+          <Image style={styles.avatar} source={avatar} />
           <View style={{ marginLeft: 10 }}>
             <Text style={styles.displayName}>
               Huy Hoàng

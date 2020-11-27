@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Item, Label } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Keyboard} from 'react-native';
-import * as colors from './../../constants/colors';
+import * as colors from '../../../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequestFromSignInScreen, resetSignInStatus } from '../../slices/authSlice';
+import { loginRequest, clearSignInError } from '../../../slices/authSlice';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 function SignInScreen({navigation}) {
+  const loading = useSelector(state => state.auth.loading);
+  const currentUser = useSelector(state => state.auth.currentUser); // dùng khi bootstrapAsync login failed, điền sẵn sđt vào ô nhập
+  const signInError =useSelector(state => state.auth.signInError);
+  const dispatch = useDispatch();
+
   const { control, handleSubmit, errors } = useForm();
   const [showCoverImg, setShowCoverImg] = useState(true);
-  const dispatch = useDispatch();
-  const loadingLoginRequestFromSignInScreen = useSelector(state => state.auth.loadingLoginRequestFromSignInScreen);
-  const signInStatus = useSelector(state => state.auth.signInStatus);
-  const deviceToken = useSelector(state => state.auth.deviceToken);
 
   useEffect(()=>{
-    dispatch(resetSignInStatus());
+    dispatch(clearSignInError());
   }, [navigation]);
 
   useEffect(() => {
@@ -55,26 +56,25 @@ function SignInScreen({navigation}) {
     );
   }
 
-  if (signInStatus?.error) {
+  if (signInError) {
     errorMsg = (
       <Text style={styles.error}>
-        {signInStatus.error.message}
+        {signInError.message}
       </Text>
     )
   }
 
   const onSubmit = (data) => {
-    dispatch(loginRequestFromSignInScreen({
+    dispatch(loginRequest({
       phoneNumber: data.phoneNumber,
       password: data.password,
-      deviceToken: deviceToken
     }));
   }
 
   return (
     <View style={styles.container}>
-      { showCoverImg && <Image source={require('../../imgs/login-img.png')} style={styles.image} /> }
-      <Spinner visible={loadingLoginRequestFromSignInScreen} />
+      { showCoverImg && <Image source={require('../../../imgs/login-img.png')} style={styles.image} /> }
+      <Spinner visible={loading} />
       <View>
         {errorMsg}
         {errorMsg && <Ionicons name="alert-circle" color={colors.redA400} size={24} />}
@@ -94,6 +94,7 @@ function SignInScreen({navigation}) {
                   onBlur={onBlur}
                   value={value}
                   placeholder="Số điện thoại"
+                  keyboardType={'phone-pad'}
                 />
               </Item>
             )}
@@ -102,7 +103,7 @@ function SignInScreen({navigation}) {
               required: true,
               // pattern: /^[0]{1}[1-9]{1}[0-9]{8}$/,
             }}
-            defaultValue=""
+            defaultValue={currentUser ? currentUser.phoneNumber ? currentUser.phoneNumber : '' : ''}
           />
           <Controller
             control={control}

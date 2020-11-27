@@ -1,19 +1,20 @@
 import React, { useLayoutEffect } from 'react';
-import { ActivityIndicator, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeInfoAfterSignUpRequest } from '../../../slices/authSlice';
 import * as colors from './../../../constants/colors';
 
 function AddYourPhotoScreen({ navigation }) {
-  const tokenMain = useSelector(state => state.auth.tokenMain);
+  const token = useSelector(state => state.auth.currentUser.token);
   const usernameCreated = useSelector(state => state.auth.usernameCreated);
-  const loadingChangeInfoAfterSignUpRequest = useSelector(state => state.auth.loadingChangeInfoAfterSignUpRequest);
+  const loading = useSelector(state => state.auth.loading);
+  
   const dispatch = useDispatch();
 
   const onIgnore = () => {
     dispatch(changeInfoAfterSignUpRequest({
-      token: tokenMain,
+      token: token,
       username: usernameCreated,
     }));
   };
@@ -95,16 +96,9 @@ function AddYourPhotoScreen({ navigation }) {
           </View>
         </TouchableOpacity>
       </View>
-      <Modal
-        visible={loadingChangeInfoAfterSignUpRequest}
-        transparent={true}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalView}>
-            <ActivityIndicator size="small" color={colors.grey700} />
-          </View>
-        </View>
-      </Modal>
+      <Spinner 
+        visible={loading}
+      />
     </View>
   );
 }

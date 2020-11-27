@@ -2,21 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {
   Button,
   StyleSheet,
-  Text,
   TextInput,
   View,
-  Dimensions,
-  KeyboardAvoidingView,
-  Keyboard,
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {AuthContext, RegisterContext} from '../../contexts/MyContexts';
-import {WarningComponent} from './LoginScreen';
+import {WarningComponent} from './signIn/LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {logoutRequest} from '../../slices/authSlice';
-import {API_SERVER_URL} from "@env"
+const API_SERVER_URL = '';
 
 export default function ChangePasswordScreen({navigation}) {
 

@@ -4,9 +4,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as colors from './../../../constants/colors';
+import {saveBirthdayCreated} from '../../../slices/authSlice';
+import {useDispatch} from 'react-redux';
 
 function BirthdayScreen({ navigation }) {
   const [date, setDate] = useState(new Date(95, 9, 16));
+  const dispatch = useDispatch();
 
   let errorMsg = null;
   if (date.getTime() > (new Date(2015, 0, 1)).getTime()) {
@@ -19,6 +22,9 @@ function BirthdayScreen({ navigation }) {
   }
 
   const onSubmit = () => {
+    dispatch(saveBirthdayCreated({
+      birthdayCreated: date.toJSON()
+    }));
     navigation.navigate('PhoneNumberScreen');
   };
 

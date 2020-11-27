@@ -5,50 +5,12 @@ import friendApi from '../../apis/friendApi';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function ListFriendSuggestionsScreen() {
-  const DATA2 = [
-    {
-      id: '1',
-      name: 'Duy Drak',
-      avatar: { uri: 'https://picsum.photos/seed/duydrak/200/200' },
-      numMutualFriend: 0,
-    },
-    {
-      id: '2',
-      name: 'Nguyễn Ngọc Sinh',
-      avatar: { uri: 'https://picsum.photos/seed/nguyenngocsinh/200/200' },
-      numMutualFriend: 9,
-    },
-    {
-      id: '3',
-      name: 'Nguyễn Văn Khoa',
-      avatar: { uri: 'https://picsum.photos/seed/nguyenvankhoa/200/200' },
-      numMutualFriend: 48,
-    },
-    {
-      id: '4',
-      name: 'Son Hoang',
-      avatar: { uri: 'https://picsum.photos/seed/sonhoang/200/200' },
-      numMutualFriend: 4,
-    },
-    {
-      id: '5',
-      name: 'Phạm Quang Thanh',
-      avatar: { uri: 'https://picsum.photos/seed/phamquangthanh/200/200' },
-      numMutualFriend: 15,
-    },
-    {
-      id: '6',
-      name: 'Nông Thanh Đạt',
-      avatar: { uri: 'https://picsum.photos/seed/nongthanhdat/200/200' },
-      numMutualFriend: 14,
-    },
-  ];
-  const tokenMain = useSelector(state => state.auth.tokenMain);
-
+  const token = useSelector(state => state.auth.currentUser.token);
+  
   const [data, setData] = useState([]);
 
   const loadData = () => {
-    friendApi.getListFriendSuggestions({token: tokenMain})
+    friendApi.getListFriendSuggestions({token: token})
       .then(result=>{
         let newData = result.data.map(value=>{
           return {
@@ -65,7 +27,7 @@ export default function ListFriendSuggestionsScreen() {
 
   const sendInvitation = (id) => {
     const params = {
-      token: tokenMain,
+      token: token,
       userId: id
     };
     friendApi.requestFriend(params)

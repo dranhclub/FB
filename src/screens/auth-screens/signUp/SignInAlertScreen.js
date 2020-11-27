@@ -2,28 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequestFromSignInAlertScreen, saveTokenDataFromSignInAlertScreen } from '../../../slices/authSlice';
+import { loginRequest, saveAccount } from '../../../slices/authSlice';
 import * as colors from './../../../constants/colors';
 
 function SignInAlertScreen({ navigation }) {
+  console.log("RENDER SignInAlertScreen");
   const phoneNumberCreated = useSelector(state => state.auth.phoneNumberCreated);
   const passwordCreated = useSelector(state => state.auth.passwordCreated);
-  const loadingLoginRequestFromSignInAlertScreen = useSelector(state => state.auth.loadingLoginRequestFromSignInAlertScreen);
+  const loading = useSelector(state => state.auth.loading);
   const usernameCreated = useSelector(state => state.auth.usernameCreated);
-  const tokenMain = useSelector(state => state.auth.tokenMain);
+  const token = useSelector(state => state.auth.currentUser.token);
   const dispatch = useDispatch();
   const [alertShown, setAlertShown] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    dispatch(loginRequestFromSignInAlertScreen({
-      phoneNumber: phoneNumberCreated,
-      password: passwordCreated,
-    }));
-  }, []);
-
-  useEffect(() => {
-    if (!loadingLoginRequestFromSignInAlertScreen && !alertShown) {
+    if (!loading && !alertShown) {
       setAlertShown(true);
       Alert.alert(
         'Lần sau, đăng nhập bằng một lần nhấn',
@@ -32,9 +26,9 @@ function SignInAlertScreen({ navigation }) {
           {
             text: 'LÚC KHÁC',
             onPress: () => {
-              dispatch(saveTokenDataFromSignInAlertScreen({
+              dispatch(saveAccount({
                 savePassword: false,
-                token: tokenMain,
+                token: token,
                 username: usernameCreated,
                 phoneNumber: phoneNumberCreated,
               }));
@@ -47,9 +41,9 @@ function SignInAlertScreen({ navigation }) {
           {
             text: 'LƯU MẬT KHẨU',
             onPress: () => {
-              dispatch(saveTokenDataFromSignInAlertScreen({
+              dispatch(saveAccount({
                 savePassword: true,
-                token: tokenMain,
+                token: token,
                 username: usernameCreated,
                 phoneNumber: phoneNumberCreated,
                 password: passwordCreated,

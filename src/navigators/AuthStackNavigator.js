@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import SelectAccountScreen from '../screens/auth-screens/SelectAccountScreen';
-import SignInScreen from '../screens/auth-screens/SignInScreen';
+import SelectAccountScreen from '../screens/auth-screens/signIn/SelectAccountScreen';
+import SignInScreen from '../screens/auth-screens/signIn/SignInScreen';
 import AddYourPhotoScreen from '../screens/auth-screens/signUp/AddYourPhotoScreen';
 import BirthdayScreen from '../screens/auth-screens/signUp/BirthdayScreen';
-import CreateAccountLoadingScreen from '../screens/auth-screens/signUp/CreateAccountLoadingScreen';
 import CreateAccountScreen from '../screens/auth-screens/signUp/CreateAccountScreen';
 import LicenseScreen from '../screens/auth-screens/signUp/LicenseScreen';
 import NameScreen from '../screens/auth-screens/signUp/NameScreen';
@@ -67,13 +66,6 @@ function AuthStackNavigator() {
         component={LicenseScreen}
         options={{
           title: 'Điều khoản & quyền riêng tư',
-        }}
-      />
-      <Stack.Screen
-        name="CreateAccountLoadingScreen"
-        component={CreateAccountLoadingScreen}
-        options={{
-          title: 'Tạo tài khoản',
         }}
       />
       <Stack.Screen

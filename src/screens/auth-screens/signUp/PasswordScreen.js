@@ -71,7 +71,7 @@ function PasswordScreen({ navigation }) {
             name="password"
             rules={{
               required: true,
-              pattern: /^\w{6,10}$/,
+              // pattern: /^\w{6,10}$/,
             }}
             defaultValue=""
           />

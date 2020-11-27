@@ -3,6 +3,7 @@ import { Image, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { View, StyleSheet } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
+import { useSelector } from 'react-redux';
 
 const exampleAvatar = require('../../imgs/avatar.jpg');
 const exampleCover = require('../../imgs/cover.jpg');

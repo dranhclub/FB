@@ -4,14 +4,15 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch } from 'react-redux';
-import { resetCreateAccountStatus, savePhoneNumberCreated } from '../../../slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearSignUpError, savePhoneNumberCreated } from '../../../slices/authSlice';
 import * as colors from './../../../constants/colors';
 
 function PhoneNumberScreen({ navigation, route }) {
   const { control, handleSubmit, errors } = useForm();
+  const phoneNumberCreated = useSelector(state => state.auth.phoneNumberCreated);
+  const signUpError = useSelector(state => state.auth.signUpError);
   const dispatch = useDispatch();
-  const haveErrorCreateAccount = route.params?.error ? true : false;
 
   let errorMsg = null;
   if (errors.phoneNumber) {
@@ -26,8 +27,8 @@ function PhoneNumberScreen({ navigation, route }) {
     dispatch(savePhoneNumberCreated({
       phoneNumberCreated: data.phoneNumber,
     }));
-    if (haveErrorCreateAccount) {
-      dispatch(resetCreateAccountStatus());
+    if (signUpError) {
+      dispatch(clearSignUpError());
       navigation.navigate('CreateAccountLoadingScreen');
     } else {
       navigation.navigate('PasswordScreen');
@@ -40,15 +41,15 @@ function PhoneNumberScreen({ navigation, route }) {
         <Text style={styles.topText}>Nhập số di động của bạn</Text>
         <View style={styles.viewErrorMsg}>
           {errorMsg}
-          {haveErrorCreateAccount && (
+          {signUpError && (
             <Text style={styles.error}>
-              Hiện đã có tài khoản liên kết với số điện thoại này.
+              {signUpError.message}
             </Text>
           )}
         </View>
         <View style={styles.viewErrorIcon}>
           {errorMsg && <Ionicons name="alert-circle" color={colors.redA400} size={24} />}
-          {haveErrorCreateAccount && <Ionicons name="alert-circle" color={colors.redA400} size={24} />}
+          {signUpError && <Ionicons name="alert-circle" color={colors.redA400} size={24} />}
         </View>
         <View style={styles.viewForm}>
           <Form style={styles.form}>
@@ -74,9 +75,9 @@ function PhoneNumberScreen({ navigation, route }) {
               name="phoneNumber"
               rules={{
                 required: true,
-                pattern: /^[0]{1}[1-9]{1}[0-9]{8}$/,
+                // pattern: /^[0]{1}[1-9]{1}[0-9]{8}$/,
               }}
-              defaultValue=""
+              defaultValue={phoneNumberCreated}
             />
           </Form>
         </View>
@@ -93,7 +94,6 @@ function PhoneNumberScreen({ navigation, route }) {
       <View>
         <TouchableOpacity
           onPress={() => {
-            // eslint-disable-next-line no-alert
             alert('Hệ thống chỉ cho đăng ký bằng số điện thoại!');
           }}
         >
