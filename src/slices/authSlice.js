@@ -120,7 +120,7 @@ export const loginRequest = createAsyncThunk('auth/loginRequest', async (params,
 
   if (response.code === RES_CODE.OK) {
     let currentUser = response.data;
-    dispatch(saveAccount(currentUser));
+    await dispatch(saveAccount(currentUser));
   }
 
   return response;

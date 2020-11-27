@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity,Switch } from 'react-native';
 import { View, StyleSheet } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUsePicsumAvatar } from '../../slices/appSlice';
+import { current } from '@reduxjs/toolkit';
 
-const exampleAvatar = require('../../imgs/avatar.jpg');
+const defaultAvatar = require('../../imgs/default-avatar.jpg');
 const exampleCover = require('../../imgs/cover.jpg');
 
-export default function EditProfileScreen() {
-
-  const [avatar, setAvatar] = useState(exampleAvatar);
+export default function EditProfileScreen({navigation}) {
+  
+  const usePicsumAvatar = useSelector(state => state.app.usePicsumAvatar);
+  const currentUser = useSelector(state => state.auth.currentUser);
+  // const [avatar, setAvatar] = useState(defaultAvatar);
   const [cover, setCover] = useState(exampleCover);
+
+  const dispatch = useDispatch();
+
+  const avatar = usePicsumAvatar ? {uri: `https://picsum.photos/seed/${current.name}/200/200`} : defaultAvatar;
 
   function showImgPicker(setter) {
     const options = {
@@ -38,19 +46,54 @@ export default function EditProfileScreen() {
     });
   }
 
+  const toggleSwitch = () => {
+    dispatch(setUsePicsumAvatar({usePicsumAvatar: !usePicsumAvatar}));
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitleStyle: {
+        fontSize: 16
+      }, 
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={()=>{}}
+        >
+          <View style={{paddingRight: 10}}>
+            <Text style={{color: '#717171'}}>
+              Lưu
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return(
     <ScrollView style={styles.container}>
       {/* Ảnh đại diện */}
       <View style={styles.div}>
         <View style={styles.header}>
           <Text style={styles.title}>Ảnh đại diện</Text>
-          <TouchableOpacity onPress={()=>showImgPicker(setAvatar)}>
+          {/* <TouchableOpacity onPress={()=>showImgPicker(setAvatar)}>
+            <Text style={styles.edit}>Chỉnh sửa</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity>
             <Text style={styles.edit}>Chỉnh sửa</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.imgWrapper}>
           <Image source={avatar} 
             style={{ width: 120, height: 120, borderRadius: 200 }} />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text>Use Picsum Avatar</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={usePicsumAvatar ? "#f5dd4b" : "#f4f3f4"}
+            onValueChange={toggleSwitch}
+            value={usePicsumAvatar}
+          />
         </View>
       </View>
 
