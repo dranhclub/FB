@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Image, StyleSheet, View, Text, SafeAreaView, ImageBackground, Button, Alert, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
@@ -111,8 +111,39 @@ export default function CreatePostScreen({navigation, route}) {
     await AsyncStorage.removeItem('savedPost');
   }
 
+
+  const post = () => {
+    dispatch(createPostRequest({
+      token: token,
+      description: description,
+      video: uploadedVideo,
+      images: uploadedPhotos,
+    }));
+  }
+
+  // Check upload status
+  React.useEffect(()=>{
+    console.log('uploadStatus:', uploadStatus);
+    if (uploadStatus.success) {
+      Alert.alert(
+        'Thành công', 
+        null, 
+        [
+          {
+            text: 'OK', 
+            onPress: ()=>{navigation.navigate("NewfeedScreen")}
+          }
+        ]
+      );
+    } else if (uploadStatus.error) {
+      Alert.alert('Lỗi', uploadStatus.error.message);
+    }
+    dispatch(resetStatus());
+  }, [uploadStatus]);
+
+
   async function loadSavedPost() {
-    try{
+    try {
       const temp = await AsyncStorage.getItem('savedPost');
       if (temp != null) {
         const savedContent = JSON.parse(temp);
@@ -122,90 +153,56 @@ export default function CreatePostScreen({navigation, route}) {
         setUploadedVideo(savedContent.video);
         setEmotion(savedContent.emotion);
       }
-    }catch(e) {
+    } catch (e) {
       console.log("Can not load saved post")
       console.log(e);
     }
   }
 
-  const post = () => {
-    dispatch(createPostRequest({
-      token: token,
-      description: description,
-      images: uploadedPhotos,
-      video: uploadedVideo,
-      emotion: emotion,
-    }));
-  }
-
-  // Check upload status
-  let errorMsg = null;
   React.useEffect(()=>{
-    if (uploadStatus.success) {
-      navigation.navigate("NewfeedScreen");
-    } else if (uploadStatus.error) {
-      errorMsg = uploadStatus.error.message;
-    }
-  }, []);
+    navigation.setOptions({
+      title: 'Tạo bài viết',
+    });
+    
+    loadSavedPost();
 
-  // Clear error and set emotion
-  React.useEffect(()=>{
+    // Clear error and set emotion
     dispatch(resetStatus());
     if (route.params) {
       setEmotion(route.params.emotion);
     }
+
   }, [navigation]);
-
-
-
-
-  // Load saved post
-  React.useEffect(()=>{
-    loadSavedPost();
-  }, []);
 
   // Alert unsaved post
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        if (!hasUnsavedChanges()) { return; }
-        e.preventDefault();
-        Alert.alert(
-          'Lưu bài viết?',
-          'Bạn có muốn lưu bài viết hay không?',
-          [
-            {
-              text: 'Lưu', styles: 'positive',
-              onPress: () => {
-                saveThePost();
-                navigation.dispatch(e.data.action)
-              }
-            },
-            {
-              text: 'Huỷ bài viết',
-              style: 'negative',
-              onPress: () => {
-                deleteSavedPost();
-                navigation.dispatch(e.data.action)
-              } 
-            },
-            { text: "Tiếp tục chỉnh sửa", style: 'neutral', onPress: () => { } },
-          ]
-        );
-      })
-  );
-
-  // Header bar
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Tạo bài viết',
-      headerRight: () => (
-        <TouchableOpacity style={{paddingHorizontal: 10}} onPress={post}>
-          <Text style={{color: '#717171'}}>ĐĂNG</Text>
-        </TouchableOpacity>
-      ),
+  React.useEffect(()=>{
+    navigation.addListener('beforeRemove', (e) => {
+      if (!hasUnsavedChanges()) { return; }
+      e.preventDefault();
+      Alert.alert(
+        'Lưu bài viết?',
+        'Bạn có muốn lưu bài viết hay không?',
+        [
+          {
+            text: 'Lưu', styles: 'positive',
+            onPress: () => {
+              saveThePost();
+              navigation.dispatch(e.data.action)
+            }
+          },
+          {
+            text: 'Huỷ bài viết',
+            style: 'negative',
+            onPress: () => {
+              deleteSavedPost();
+              navigation.dispatch(e.data.action)
+            }
+          },
+          { text: "Tiếp tục chỉnh sửa", style: 'neutral', onPress: () => { } },
+        ]
+      );
     });
-  }, [navigation]);
+  }, [navigation])
 
   const PhotoView = () => {
     return (
@@ -246,7 +243,6 @@ export default function CreatePostScreen({navigation, route}) {
   return (
     <View style={styles.container}>
       <Spinner visible={uploading}/>
-      <Text>{errorMsg}</Text>
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {/* header */}
         <View style={styles.header}>
@@ -300,8 +296,8 @@ export default function CreatePostScreen({navigation, route}) {
       {/* options */}
       <View style={styles.bottomMenu}>
         <View style={{flexDirection: 'row', alignItems:'center', paddingHorizontal: 10}}>
-          <Text style={{flex: 1}}>Thêm vào bài viết của bạn</Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {/* <Text style={{flex: 1}}>Thêm vào bài viết của bạn</Text> */}
+          <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
             <TouchableOpacity onPress={()=>showImgPicker()}>
               <FontAwesome5 color={'#4CAF50'} name='image' size={25}/>
             </TouchableOpacity>
@@ -312,6 +308,9 @@ export default function CreatePostScreen({navigation, route}) {
               <FontAwesome5 color={'#FBC02D'} name='laugh' size={25}/>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity style={{ paddingHorizontal: 10 }} onPress={()=>post()}>
+            <Text style={{ color: '#717171' }}>ĐĂNG</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
