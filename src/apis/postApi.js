@@ -15,13 +15,13 @@ const postApi = {
     console.log("RECEIVED create post response:", response);
     return response;
   },
-  getPost: async ({token}) => {
+  getPosts: async ({token}) => {
     const params = {
       token: token,
     }
-    console.log("SEND get post request:", params);
-    const response = await axiosClient.post('create_post', params);
-    console.log("RECEIVED response: ", response);
+    console.log("SEND get posts request:", params);
+    const response = await axiosClient.post('get_posts', params);
+    console.log("RECEIVED get posts response: ", response);
     return response;
   },
   editPost: params => {

@@ -7,7 +7,7 @@ import ChangePasswordScreen from '../screens/auth-screens/ChangePasswordScreen';
 import ListFriendScreen from '../screens/friend-screens/ListFriendScreen';
 import CommentScreen from '../screens/posts-screens/CommentScreen';
 import ReportScreen from '../screens/posts-screens/ReportScreen';
-import SearchScreen from '../screens/SearchScreen';
+import SearchScreen from '../screens/search-screens/SearchScreen';
 import EditProfileScreen from '../screens/profile-screens/EditProfileScreen';
 import FriendScreen from '../screens/friend-screens/FriendScreen';
 import ListFriendRequestsScreen from '../screens/friend-screens/ListFriendRequestsScreen';
@@ -20,7 +20,7 @@ function MainStackNavigator() {
   return (
     <Stack.Navigator initialRouteName="TopTabNavigator">
       <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} />
+      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{ title: 'Tạo bài viết', }} />
       <Stack.Screen name="EmotionScreen" component={EmotionScreen} options={{ title: 'Bạn đang cảm thấy thế nào?' }} />
       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />

@@ -10,6 +10,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagesGridView from './ImagesGridView';
 import VideoPlayer from 'react-native-video-player';
 import RBSheet from "react-native-raw-bottom-sheet";
+import {timeAgo} from '../helper/timeAgo';
 
 
 export default function Post({ displayName, avatar, time, text, photos, video, numLikes, numComments}) {
@@ -92,7 +93,7 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text style={styles.displayName}>{displayName}</Text>
           <Text style={styles.info}>
-            {time}  <FontAwesome5 name={'globe-americas'} />
+            {timeAgo(Date.parse(time))}  <FontAwesome5 name={'globe-americas'} />
           </Text>
         </View>
         <View>

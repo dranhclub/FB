@@ -17,7 +17,7 @@ const post = createSlice({
     }
   },
   reducers: {
-    resetStatus: (state) => {
+    resetUploadStatus: (state) => {
       state.uploadStatus = {
         success: false,
         error: null
@@ -53,7 +53,7 @@ const post = createSlice({
 const {reducer, actions} = post;
 
 export const {
-  resetStatus
+  resetUploadStatus
 } = actions;
 
 export default reducer;

@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import {createPostRequest, resetStatus} from '../../slices/postSlice';
+import {createPostRequest, resetUploadStatus} from '../../slices/postSlice';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function CreatePostScreen({navigation, route}) {
@@ -133,12 +133,14 @@ export default function CreatePostScreen({navigation, route}) {
             text: 'OK', 
             onPress: ()=>{navigation.navigate("NewfeedScreen")}
           }
-        ]
+        ], {
+          onDismiss: ()=>dispatch(resetUploadStatus())
+        }
       );
     } else if (uploadStatus.error) {
       Alert.alert('Lỗi', uploadStatus.error.message);
+      dispatch(resetUploadStatus());
     }
-    dispatch(resetStatus());
   }, [uploadStatus]);
 
 
@@ -159,20 +161,16 @@ export default function CreatePostScreen({navigation, route}) {
     }
   }
 
-  React.useEffect(()=>{
-    navigation.setOptions({
-      title: 'Tạo bài viết',
-    });
-    
+  React.useEffect(()=>{    
     loadSavedPost();
+  }, [navigation]);
 
-    // Clear error and set emotion
-    dispatch(resetStatus());
+  // Clear error and set emotion
+  React.useEffect(()=>{
     if (route.params) {
       setEmotion(route.params.emotion);
     }
-
-  }, [navigation]);
+  }, [route]);
 
   // Alert unsaved post
   React.useEffect(()=>{

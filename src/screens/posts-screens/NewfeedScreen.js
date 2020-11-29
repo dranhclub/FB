@@ -4,92 +4,122 @@ import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handl
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
 import Post from '../../components/Post';
+import postApi from '../../apis/postApi';
 
-const DATA = [
-  {
-    id: '1',
-    avatar: { uri: 'https://picsum.photos/seed/anhhoang/200/200' },
-    displayName: 'Anh Hoàng',
-    time: 'Vừa xong',
-    text: 'Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod. Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod.',
-    photos : [],
-    video : null,
-    numLikes: 1,
-    numComments: 0
-  },
-  {
-    id: '2',
-    avatar: { uri: 'https://picsum.photos/seed/huythao/200/200' },
-    displayName: 'Huy Thao',
-    time: '4 giờ',
-    text: '😂😂😂',
-    photos: [],
-    video: {uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'},    
-    numLikes: 5,
-    numComments: 3
-  },
-  {
-    id: '3',
-    avatar: { uri: 'https://picsum.photos/seed/khanhhuyen/200/200' },
-    displayName: 'Khánh Huyền',
-    time: '2 giờ',
-    text: 'Thấy anh lúc chiều thế là ưng\nMê anh quá chừng thế là yêu.. 🤭',
-    photos: [
-      require('../../imgs/125269147_1093885694377989_4817391640640507065_o.jpg')
-    ],
-    video: null,
-    numLikes: 20,
-    numComments: 7
-  },
-  {
-    id: '3.1',
-    avatar: require('../../imgs/system32_comic.jpg'),
-    displayName: 'System32 Comics',
-    time: '7 giờ',
-    text: 'Computer Test',
-    photos: [
-      require('../../imgs/computer_test.jpg')
-    ],
-    video: null,
-    numLikes: 30,
-    numComments: 3
-  },
-  {
-    id: '4',
-    avatar: require('../../imgs/codelearn.io_avatar.png'),
-    displayName: 'CodeLearn.io',
-    time: '4 giờ',
-    text: 'Chuyện đâu của riêng ai...',
-    photos: [
-      require('../../imgs/codelearn_meme.jpg')
-    ],
-    video: null,
-    numLikes: 21,
-    numComments: 1
-  },
-  {
-    id: '5',
-    avatar: { uri: 'https://picsum.photos/seed/khanhhuyen/200/200' },
-    displayName: 'Khánh Huyền',
-    time: '2 giờ',
-    text: 'Thấy anh lúc chiều thế là ưng\nMê anh quá chừng thế là yêu.. 🤭',
-    photos: [
-      { uri: 'https://picsum.photos/seed/anhhoang/200/200' }, 
-      { uri: 'https://picsum.photos/seed/anhhoang2/200/200' }, 
-      { uri: 'https://picsum.photos/seed/anhhoang3/200/200' }, 
-      { uri: 'https://picsum.photos/seed/anhhoang4/200/200' }, 
-    ],
-    video: null,
-    numLikes: 0,
-    numComments: 0
-  },
-]
+// const DATA = [
+//   {
+//     id: '1',
+//     avatar: { uri: 'https://picsum.photos/seed/anhhoang/200/200' },
+//     displayName: 'Anh Hoàng',
+//     time: 'Vừa xong',
+//     text: 'Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod. Non in magna fugiat Lorem aliquip dolor. Deserunt pariatur nulla id adipisicing sint nulla sunt commodo consequat esse enim deserunt. Sit fugiat in elit dolor adipisicing magna ex dolor. Ullamco laborum eiusmod elit est tempor laboris anim excepteur culpa anim commodo eiusmod.',
+//     photos : [],
+//     video : null,
+//     numLikes: 1,
+//     numComments: 0
+//   },
+//   {
+//     id: '2',
+//     avatar: { uri: 'https://picsum.photos/seed/huythao/200/200' },
+//     displayName: 'Huy Thao',
+//     time: '4 giờ',
+//     text: '😂😂😂',
+//     photos: [],
+//     video: {uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'},    
+//     numLikes: 5,
+//     numComments: 3
+//   },
+//   {
+//     id: '3',
+//     avatar: { uri: 'https://picsum.photos/seed/khanhhuyen/200/200' },
+//     displayName: 'Khánh Huyền',
+//     time: '2 giờ',
+//     text: 'Thấy anh lúc chiều thế là ưng\nMê anh quá chừng thế là yêu.. 🤭',
+//     photos: [
+//       require('../../imgs/125269147_1093885694377989_4817391640640507065_o.jpg')
+//     ],
+//     video: null,
+//     numLikes: 20,
+//     numComments: 7
+//   },
+//   {
+//     id: '3.1',
+//     avatar: require('../../imgs/system32_comic.jpg'),
+//     displayName: 'System32 Comics',
+//     time: '7 giờ',
+//     text: 'Computer Test',
+//     photos: [
+//       require('../../imgs/computer_test.jpg')
+//     ],
+//     video: null,
+//     numLikes: 30,
+//     numComments: 3
+//   },
+//   {
+//     id: '4',
+//     avatar: require('../../imgs/codelearn.io_avatar.png'),
+//     displayName: 'CodeLearn.io',
+//     time: '4 giờ',
+//     text: 'Chuyện đâu của riêng ai...',
+//     photos: [
+//       require('../../imgs/codelearn_meme.jpg')
+//     ],
+//     video: null,
+//     numLikes: 21,
+//     numComments: 1
+//   },
+//   {
+//     id: '5',
+//     avatar: { uri: 'https://picsum.photos/seed/khanhhuyen/200/200' },
+//     displayName: 'Khánh Huyền',
+//     time: '2 giờ',
+//     text: 'Thấy anh lúc chiều thế là ưng\nMê anh quá chừng thế là yêu.. 🤭',
+//     photos: [
+//       { uri: 'https://picsum.photos/seed/anhhoang/200/200' }, 
+//       { uri: 'https://picsum.photos/seed/anhhoang2/200/200' }, 
+//       { uri: 'https://picsum.photos/seed/anhhoang3/200/200' }, 
+//       { uri: 'https://picsum.photos/seed/anhhoang4/200/200' }, 
+//     ],
+//     video: null,
+//     numLikes: 0,
+//     numComments: 0
+//   },
+// ]
 
 export default function NewfeedScreen({ navigation }) {
+  
+  const [data, setData] = React.useState([]);
+  
+  const token = useSelector(state => state.auth.currentUser.token);
 
   let avatar = useSelector(state => state.auth.currentUser.avatar);
   if (avatar === '-1') {
     avatar = require('../../imgs/default-avatar.jpg');
+  }
+
+  React.useLayoutEffect(()=>{
+    loadData();
+  }, [navigation]);
+
+  const loadData = () => {
+    postApi.getPosts({ token: token })
+      .then(result => {
+        let newData = result.data.map(post => {
+          return {
+            id: post.id,
+            avatar: { uri: `https://picsum.photos/seed/${post.author.name}/200/200` },
+            displayName: post.author.name,
+            time: post.created,
+            text: post.description,
+            photos: [],
+            video: null,
+            numLikes: post.like,
+            numComments: post.comment
+          };
+        });
+        setData(newData);
+      })
+      .catch(err => console.log(err));
   }
 
   /* Khung "Bạn đang nghĩ gì?" */
@@ -132,7 +162,7 @@ export default function NewfeedScreen({ navigation }) {
     <View>
       <FlatList 
         ListHeaderComponent={CreatePostView}
-        data={DATA}
+        data={data}
         keyExtractor = {item => item.id}
         renderItem={({item})=>
           <Post 
@@ -147,7 +177,7 @@ export default function NewfeedScreen({ navigation }) {
             numComments={item.numComments}
           />}
         refreshing={false}
-        onRefresh={()=>{}}
+        onRefresh={loadData}
       />
     </View>
   );

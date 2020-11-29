@@ -6,7 +6,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Post from '../components/Post';
+import Post from '../../components/Post';
 
 const Tab = createMaterialTopTabNavigator();
 const examplePeople = [
