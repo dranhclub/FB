@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainStackNavigator from './src/navigators/MainStackNavigator';
 import AuthStackNavigator from './src/navigators/AuthStackNavigator';
 import SplashScreen from './src/screens/SplashScreen';
-import AsyncStorage from '@react-native-community/async-storage';
 import { bootstrapAsync } from './src/slices/authSlice';
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from 'react-native';
-
 
 const App = () => {
   const showSplash = useSelector(state => state.auth.showSplash);

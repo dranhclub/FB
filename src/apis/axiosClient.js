@@ -5,7 +5,7 @@ import queryString from 'query-string';
 // export const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
 // API on local for debug
-export const API_SERVER_URL = 'http://192.168.30.103:3000/';
+export const API_SERVER_URL = 'http://192.168.1.11:3000/';
 
 console.log("API: " + API_SERVER_URL);
 

@@ -5,45 +5,31 @@ import * as RES_CODE from './../constants/RES_CODE';
 import messaging from '@react-native-firebase/messaging';
 
 export const bootstrapAsync = createAsyncThunk('auth/bootstrapAsync', async (params, {dispatch, getState}) => {
-  console.log('Running bootstrapAsync');
-  try {
-    // Lấy thông tin từ tài khoản hiện tại
-    let temp = await AsyncStorage.getItem('currentUser');
-    const currentUser = temp !== null ? JSON.parse(temp) : null;
-    console.log("currentUser:", currentUser);
-
-    // Lấy thông tin về các tài khoản đã từng đăng nhập
-    temp = await AsyncStorage.getItem('savedUsers');
-    const savedUsers = temp !== null ? JSON.parse(temp) : [];
-    console.log("savedUsers:", savedUsers);
-
-    if (currentUser) {
-      await dispatch(loginRequest({
-        phoneNumber: currentUser.phoneNumber,
-        password: currentUser.password
-      }));
-      if (getState().auth.loggedIn) {
-        return {
-          key: 'HAS CURRENT, LOGIN SUCCESS',
-          currentUser: currentUser
-        };
-      } else {
-        return {key: 'HAS CURRENT, LOGIN FAILED'};
-      }
-    } else if (savedUsers.length > 0) {
-      return {
-        key: 'HAS NOT CURRENT, HAS HISTORY',
-        savedUsers: savedUsers
-      };
-    } else {
-      return {
-        key: 'HAS NOT CURRENT, HAS NOT HISTORY',
-        savedUsers: []
-      }
-    }
-  } catch (error) {
-    console.log('Error at bootstrapAsync:', error.message);
+  console.info('RUNNING BOOTSTRAP ASYNC');
+  await dispatch(loadCurrentUserFromStorage());
+  await dispatch(loadSavedUsersFromStorage());
+  const currentUser = getState().auth.currentUser;
+  if (currentUser) {
+    return {key: 'GO IN APP'};
+  } else {
+    return {key: 'GO LOGIN'}
   }
+});
+
+// Lấy thông tin từ tài khoản hiện tại
+export const loadCurrentUserFromStorage = createAsyncThunk('auth/loadCurrentUserFromStorage', async () => {
+  let temp = await AsyncStorage.getItem('currentUser');
+  const currentUser = temp !== null ? JSON.parse(temp) : null;
+  console.log("Current User:", currentUser);
+  return currentUser;
+});
+
+// Lấy thông tin về các tài khoản đã từng đăng nhập
+export const loadSavedUsersFromStorage = createAsyncThunk('auth/loadSavedUsersFromStorage', async (params) => {
+  temp = await AsyncStorage.getItem('savedUsers');
+  const savedUsers = temp !== null ? JSON.parse(temp) : [];
+  console.log("Saved Users:", savedUsers);
+  return savedUsers;
 });
 
 export const signUpRequest = createAsyncThunk('auth/signUpRequest', async params => {
@@ -111,7 +97,6 @@ export const changeInfoAfterSignUpRequest = createAsyncThunk('auth/changeInfoAft
 export const loginRequest = createAsyncThunk('auth/loginRequest', async (params, {dispatch}) => {
   // lấy ra device token
   let deviceToken = await messaging().getToken();
-  console.log("deviceToken:", deviceToken);
   const response = await authApi.login({
     ...params,
     deviceToken,
@@ -137,7 +122,7 @@ export const logoutRequest = createAsyncThunk('auth/logoutRequest', async params
   }
 });
 
-export const removeAccountThunk = createAsyncThunk('auth/removeAccountThunk', async account => {
+export const removeAccountFromStorage = createAsyncThunk('auth/removeAccountFromStorage', async account => {
   try {
     const temp = await AsyncStorage.getItem('savedUsers');
     let savedUsers = JSON.parse(temp);
@@ -210,29 +195,21 @@ const auth = createSlice({
     },
     [bootstrapAsync.fulfilled]: (state, action) => {
       state.showSplash = false;
-      switch(action.payload.key) {
-        case 'HAS CURRENT, LOGIN SUCCESS':
-          state.inApp = true;
-          state.loggedIn = true;
-          state.currentUser = action.payload.currentUser;
-          break;
-        case 'HAS CURRENT, LOGIN FAILED':
-          // Hiện màn hình nhập sđt, mật khẩu
-          state.loggedIn = false;
-          state.currentUser = action.payload.currentUser;
-          break;
-        case 'HAS NOT CURRENT, HAS HISTORY':
-          // show select account screen
-          state.loggedIn = false;
-          state.savedUsers = action.payload.savedUsers;
-          break;
-        case 'HAS NOT CURRENT, HAS NOT HISTORY':
-          // show sign in screen
-          state.loggedIn = false;
-          break;
-        default:
-          throw "bootstrap key invalid";
+      if (action.payload.key === 'GO IN APP') {
+        state.inApp = true;
+      } else if (action.payload.key === 'GO LOGIN') {
+        state.inApp = false;
       }
+    },
+
+    /* Load current user from storage */
+    [loadCurrentUserFromStorage.fulfilled]: (state, action) => {
+      state.currentUser = action.payload;
+    },
+
+    /* Load saved users from storage */
+    [loadSavedUsersFromStorage.fulfilled]: (state, action) => {
+      state.savedUsers = action.payload;
     },
 
     /* Sign Up Request */
@@ -320,10 +297,10 @@ const auth = createSlice({
       }
     },
 
-    [removeAccountThunk.pending]: state => {
+    [removeAccountFromStorage.pending]: state => {
       state.loading = true;
     },
-    [removeAccountThunk.fulfilled]: (state, action) => {
+    [removeAccountFromStorage.fulfilled]: (state, action) => {
       state.loading = false;
       state.savedUsers = action.payload;
     }

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import Spinner from 'react-native-loading-spinner-overlay';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import {logoutRequest} from '../slices/authSlice';
 
 export default function MenuScreen({navigation}) {
 
+  const loading = useSelector(state => state.auth.loading);
   const currentUser = useSelector(state => state.auth.currentUser);
 
   let avatar = useSelector(state => state.auth.currentUser.avatar);
@@ -21,6 +23,7 @@ export default function MenuScreen({navigation}) {
 
   return(
     <ScrollView>
+      <Spinner visible={loading}/>
       <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
         {/* headers */}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

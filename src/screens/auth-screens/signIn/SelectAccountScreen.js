@@ -4,7 +4,7 @@ import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import Spinner from 'react-native-loading-spinner-overlay';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest, removeAccountThunk } from '../../../slices/authSlice';
+import { loginRequest, removeAccountFromStorage, loadSavedUsersFromStorage } from '../../../slices/authSlice';
 import * as colors from '../../../constants/colors';
 
 const defaultAvatar = require('../../../imgs/default-avatar.jpg');
@@ -15,6 +15,7 @@ function SelectAccountScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(()=>{
+    dispatch(loadSavedUsersFromStorage());
     if (savedUsers.length == 0) {
       navigation.navigate("SignInScreen");
     }
@@ -30,7 +31,7 @@ function SelectAccountScreen({ navigation }) {
   };
 
   const removeAccount = (account) => {
-    dispatch(removeAccountThunk(account));
+    dispatch(removeAccountFromStorage(account));
   }
 
   return (
