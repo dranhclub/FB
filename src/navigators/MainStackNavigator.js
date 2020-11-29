@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import TabNavigator from './TabNavigator';
-import PostScreen from '../screens/posts-screens/PostScreen';
+import CreatePostScreen from '../screens/posts-screens/CreatePostScreen';
 import ChangePasswordScreen from '../screens/auth-screens/ChangePasswordScreen';
 import ListFriendScreen from '../screens/friend-screens/ListFriendScreen';
 import CommentScreen from '../screens/posts-screens/CommentScreen';
@@ -20,7 +20,7 @@ function MainStackNavigator() {
   return (
     <Stack.Navigator initialRouteName="TopTabNavigator">
       <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="PostScreen" component={PostScreen} />
+      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} />
       <Stack.Screen name="EmotionScreen" component={EmotionScreen} options={{ title: 'Bạn đang cảm thấy thế nào?' }} />
       <Stack.Screen name="CommentScreen" component={CommentScreen} options={{ title: 'Bình luận' }} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ title: 'Đổi mật khẩu' }} />

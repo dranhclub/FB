@@ -167,7 +167,7 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
           }
         }}
       >
-        <TouchableOpacity onPress={()=>navigation.navigate("PostScreen")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("CreatePostScreen")}>
           <View style={{padding: 20, flexDirection: 'row', alignItems: 'center'}}>
             <View style={{backgroundColor: '#ECEFF1', width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 50}}>
               <FontAwesome5 size={22} name='edit'/>

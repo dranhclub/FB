@@ -2,10 +2,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../slices/authSlice';
 import appReducer from '../slices/appSlice';
+import postReducer from '../slices/postSlice';
 
 const rootReducer = {
   auth: authReducer,
-  app: appReducer
+  app: appReducer,
+  post: postReducer
 };
 
 const store = configureStore({

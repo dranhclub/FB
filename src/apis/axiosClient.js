@@ -2,10 +2,10 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 // API on heroku server:
-const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
+// export const API_SERVER_URL = 'https://hidden-refuge-96933.herokuapp.com/';
 
 // API on local for debug
-// const API_SERVER_URL = 'http://192.168.1.11:3000/';
+export const API_SERVER_URL = 'http://192.168.30.103:3000/';
 
 console.log("API: " + API_SERVER_URL);
 

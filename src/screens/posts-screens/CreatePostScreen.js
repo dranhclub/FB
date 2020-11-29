@@ -4,25 +4,25 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {createPostRequest, resetStatus} from '../../slices/postSlice';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export default function PostScreen({navigation, route}) {
+export default function CreatePostScreen({navigation, route}) {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState();
   const [description, setDescription] = useState('');
   const [emotion, setEmotion] = useState();
 
+  const uploading = useSelector(state => state.post.uploading);
+  const uploadStatus = useSelector(state => state.post.uploadStatus);
+  const token = useSelector(state => state.auth.currentUser.token);
+  const dispatch = useDispatch();
+
   let avatar = useSelector(state => state.auth.currentUser.avatar);
   if (avatar === '-1') {
     avatar = require('../../imgs/default-avatar.jpg');
   }
-
-  React.useEffect(()=>{
-    if (route.params) {
-      setEmotion(route.params.emotion);
-      console.log(route);
-    }
-  }, [route]);
 
   function getMediaType() {
     return uploadedPhotos.length > 0 ? 'photo' : uploadedVideo ? 'video' : 'none';
@@ -31,42 +31,6 @@ export default function PostScreen({navigation, route}) {
   function hasUnsavedChanges() {
     //TODO: implement
     return true;
-  }
-
-  const PhotoView = () => {
-    return (
-      <View style={styles.imgContainer}>
-        {uploadedPhotos.map((img, index) => {
-          return (
-            <View style={styles.uploadedImgWrapper} key={`${index}`}>
-              <ImageBackground style={styles.uploadedImg} source={img} >
-                <TouchableOpacity onPress={()=>{
-                  var array = [...uploadedPhotos];
-                  console.log('remove index' + index);
-                  array.splice(index, 1);
-                  setUploadedPhotos(array);
-                }}>
-                  <Text style={styles.xBtn}>
-                    <FontAwesome5 name={'times-circle'} size={20}/>
-                  </Text>
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          )
-        })}
-      </View>
-    );
-  }
-
-  const VideoView = () => {
-    return(
-      <VideoPlayer
-        video = {uploadedVideo}
-        videoWidth={1600}
-        videoHeight={900}
-        thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-      />
-    )
   }
 
   function showImgPicker() {
@@ -164,16 +128,36 @@ export default function PostScreen({navigation, route}) {
     }
   }
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Tạo bài viết',
-      headerRight: () => (
-        <TouchableOpacity style={{paddingHorizontal: 10}}>
-          <Text style={{color: '#717171'}}>ĐĂNG</Text>
-        </TouchableOpacity>
-      ),
-    });
+  const post = () => {
+    dispatch(createPostRequest({
+      token: token,
+      description: description,
+      images: uploadedPhotos,
+      video: uploadedVideo,
+      emotion: emotion,
+    }));
+  }
+
+  // Check upload status
+  let errorMsg = null;
+  React.useEffect(()=>{
+    if (uploadStatus.success) {
+      navigation.navigate("NewfeedScreen");
+    } else if (uploadStatus.error) {
+      errorMsg = uploadStatus.error.message;
+    }
+  }, []);
+
+  // Clear error and set emotion
+  React.useEffect(()=>{
+    dispatch(resetStatus());
+    if (route.params) {
+      setEmotion(route.params.emotion);
+    }
   }, [navigation]);
+
+
+
 
   // Load saved post
   React.useEffect(()=>{
@@ -211,9 +195,58 @@ export default function PostScreen({navigation, route}) {
       })
   );
 
+  // Header bar
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Tạo bài viết',
+      headerRight: () => (
+        <TouchableOpacity style={{paddingHorizontal: 10}} onPress={post}>
+          <Text style={{color: '#717171'}}>ĐĂNG</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
+  const PhotoView = () => {
+    return (
+      <View style={styles.imgContainer}>
+        {uploadedPhotos.map((img, index) => {
+          return (
+            <View style={styles.uploadedImgWrapper} key={`${index}`}>
+              <ImageBackground style={styles.uploadedImg} source={img} >
+                <TouchableOpacity onPress={()=>{
+                  var array = [...uploadedPhotos];
+                  console.log('remove index' + index);
+                  array.splice(index, 1);
+                  setUploadedPhotos(array);
+                }}>
+                  <Text style={styles.xBtn}>
+                    <FontAwesome5 name={'times-circle'} size={20}/>
+                  </Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          )
+        })}
+      </View>
+    );
+  }
+
+  const VideoView = () => {
+    return(
+      <VideoPlayer
+        video = {uploadedVideo}
+        videoWidth={1600}
+        videoHeight={900}
+        thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+      />
+    )
+  }
 
   return (
     <View style={styles.container}>
+      <Spinner visible={uploading}/>
+      <Text>{errorMsg}</Text>
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {/* header */}
         <View style={styles.header}>

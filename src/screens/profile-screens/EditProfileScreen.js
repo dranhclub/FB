@@ -54,7 +54,7 @@ export default function EditProfileScreen({navigation}) {
     navigation.setOptions({
       headerTitleStyle: {
         fontSize: 16
-      }, 
+      },
       headerRight: () => (
         <TouchableOpacity
           onPress={()=>{}}

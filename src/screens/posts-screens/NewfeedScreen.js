@@ -99,7 +99,7 @@ export default function NewfeedScreen({ navigation }) {
         <View style={styles.createPostTopWrapper}>
           <Image source={avatar} style={styles.avatar} />
           <View style={styles.whatDoUThinkBtn}>
-            <TouchableHighlight onPress={() => navigation.navigate('PostScreen')} underlayColor={'#ccc'}>
+            <TouchableHighlight onPress={() => navigation.navigate('CreatePostScreen')} underlayColor={'#ccc'}>
               <Text style={{ fontSize: 18 }}>Bạn đang nghĩ gì?</Text>
             </TouchableHighlight>
           </View>

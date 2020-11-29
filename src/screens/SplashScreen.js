@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import {View, Text, Image} from 'react-native'
+import {API_SERVER_URL} from '../apis/axiosClient';
 
 export default function SplashScreen() {
   const logo = require('../imgs/logoFB.jpg');
@@ -15,6 +16,10 @@ export default function SplashScreen() {
       <View style={{marginBottom: 30, alignItems: 'center'}}>
         <Image source={banner} style={{width: 308/120*60, height: 60}}/>
         <Text>Fakebook - Learning React Native</Text>
+        <Text style={{color: '#616161'}}>
+           API_SERVER_URL: 
+          {API_SERVER_URL}
+        </Text>
       </View>
     </View>
   );
