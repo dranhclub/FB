@@ -1183,6 +1183,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-10.0.0.tgz#fe0bd993e80dbccffd7c5c21ee04754f2196ad81"
   integrity sha512-XSoHSVvxR5MRzkJ/RQWzO3LQ29N13fWckttd5oxur2OtEMHZM7CseWqlN3fcWcoGNZXh17HXu9XlxsznE/kzxA==
 
+"@react-native-firebase/storage@^10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-10.1.0.tgz#c7728c5cbf1e28667f3d7932d8a813027d79732b"
+  integrity sha512-VkSmnlZAJBa+uqkYuyxaELZXOr8gYUB0bUWLoOB/XWIMbHDJfng9OD3aWVvn70z8/+j/eZU4JPkxMVLIqjG6kg==
+
 "@react-navigation/core@^5.13.0":
   version "5.13.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.13.0.tgz#2cd7b39fc921698dc6d47f5f41e9ad671936195f"

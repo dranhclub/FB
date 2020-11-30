@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -20,7 +20,6 @@ export default function MenuScreen({navigation}) {
   const signOut = () => {
     dispatch(logoutRequest());
   }
-
   return(
     <ScrollView>
       <Spinner visible={loading}/>

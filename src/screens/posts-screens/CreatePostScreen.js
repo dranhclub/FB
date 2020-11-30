@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {Image, StyleSheet, View, Text, SafeAreaView, ImageBackground, Button, Alert, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import {Image, StyleSheet, View, Text, SafeAreaView, ImageBackground, Button, Alert, ScrollView, TextInput, TouchableOpacity, Platform } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-picker';
 import VideoPlayer from 'react-native-video-player';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import {createPostRequest, resetUploadStatus} from '../../slices/postSlice';
+import {createPostRequest, resetUploadStatus, setUploadProgress} from '../../slices/postSlice';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function CreatePostScreen({navigation, route}) {
@@ -28,9 +28,8 @@ export default function CreatePostScreen({navigation, route}) {
     return uploadedPhotos.length > 0 ? 'photo' : uploadedVideo ? 'video' : 'none';
   }
 
-  function hasUnsavedChanges() {
-    //TODO: implement
-    return true;
+  const hasUnsavedChanges = () => {
+    return description !== '' || uploadedVideo || uploadedPhotos.length > 0;
   }
 
   function showImgPicker() {
@@ -53,7 +52,7 @@ export default function CreatePostScreen({navigation, route}) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
-
+        console.log("source:", source);
         setUploadedPhotos([
           ...uploadedPhotos,
           source
@@ -118,12 +117,12 @@ export default function CreatePostScreen({navigation, route}) {
       description: description,
       video: uploadedVideo,
       images: uploadedPhotos,
+      emotion: emotion
     }));
   }
 
   // Check upload status
   React.useEffect(()=>{
-    console.log('uploadStatus:', uploadStatus);
     if (uploadStatus.success) {
       Alert.alert(
         'Thành công', 
@@ -131,10 +130,16 @@ export default function CreatePostScreen({navigation, route}) {
         [
           {
             text: 'OK', 
-            onPress: ()=>{navigation.navigate("NewfeedScreen")}
+            onPress: ()=>{
+              navigation.navigate("NewfeedScreen")
+              dispatch(resetUploadStatus());
+            }
           }
         ], {
-          onDismiss: ()=>dispatch(resetUploadStatus())
+          onDismiss: ()=>{
+            dispatch(resetUploadStatus());
+            console.log("on dismiss");
+          },
         }
       );
     } else if (uploadStatus.error) {
@@ -174,7 +179,7 @@ export default function CreatePostScreen({navigation, route}) {
 
   // Alert unsaved post
   React.useEffect(()=>{
-    navigation.addListener('beforeRemove', (e) => {
+    const unsubscribed = navigation.addListener('beforeRemove', (e) => {
       if (!hasUnsavedChanges()) { return; }
       e.preventDefault();
       Alert.alert(
@@ -200,7 +205,25 @@ export default function CreatePostScreen({navigation, route}) {
         ]
       );
     });
-  }, [navigation])
+    return unsubscribed;
+  }, [description, uploadedPhotos, uploadedVideo]);
+
+  // Header 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Tạo bài viết',
+      headerRight: () => (
+        <TouchableOpacity 
+          style={{paddingHorizontal: 10}} 
+          onPress={()=>{
+            if (hasUnsavedChanges()) post();
+          }}
+        >
+          <Text style={{color: '#717171'}}>ĐĂNG</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [description, uploadedVideo, uploadedPhotos]);
 
   const PhotoView = () => {
     return (
@@ -240,7 +263,10 @@ export default function CreatePostScreen({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <Spinner visible={uploading}/>
+      <Spinner 
+        visible={uploading}
+        textContent={`${uploadStatus.progress} %`}
+        />
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {/* header */}
         <View style={styles.header}>
@@ -294,8 +320,8 @@ export default function CreatePostScreen({navigation, route}) {
       {/* options */}
       <View style={styles.bottomMenu}>
         <View style={{flexDirection: 'row', alignItems:'center', paddingHorizontal: 10}}>
-          {/* <Text style={{flex: 1}}>Thêm vào bài viết của bạn</Text> */}
-          <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+          <Text style={{flex: 1}}>Thêm vào bài viết của bạn</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity onPress={()=>showImgPicker()}>
               <FontAwesome5 color={'#4CAF50'} name='image' size={25}/>
             </TouchableOpacity>
@@ -306,9 +332,6 @@ export default function CreatePostScreen({navigation, route}) {
               <FontAwesome5 color={'#FBC02D'} name='laugh' size={25}/>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{ paddingHorizontal: 10 }} onPress={()=>post()}>
-            <Text style={{ color: '#717171' }}>ĐĂNG</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>

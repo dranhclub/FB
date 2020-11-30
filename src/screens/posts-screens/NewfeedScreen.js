@@ -111,8 +111,8 @@ export default function NewfeedScreen({ navigation }) {
             displayName: post.author.name,
             time: post.created,
             text: post.description,
-            photos: [],
-            video: null,
+            photos: post.images.map((img)=>{return{uri:img}}),
+            video: post.video ? {uri: post.video} : null,
             numLikes: post.like,
             numComments: post.comment
           };
