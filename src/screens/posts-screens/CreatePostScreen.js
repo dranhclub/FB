@@ -14,6 +14,7 @@ export default function CreatePostScreen({navigation, route}) {
   const [description, setDescription] = useState('');
   const [emotion, setEmotion] = useState();
 
+  const currentUser = useSelector(state => state.auth.currentUser);
   const uploading = useSelector(state => state.post.uploading);
   const uploadStatus = useSelector(state => state.post.uploadStatus);
   const token = useSelector(state => state.auth.currentUser.token);
@@ -273,7 +274,7 @@ export default function CreatePostScreen({navigation, route}) {
           <Image style={styles.avatar} source={avatar} />
           <View style={{ marginLeft: 10 }}>
             <Text style={styles.displayName}>
-              Huy Hoàng
+              {currentUser.name}
               {
                 emotion ?
                   <Text style={{ color: '#717171', fontSize: 16, fontWeight: 'normal' }}> ― Đang {emotion.icon} cảm thấy {emotion.name}</Text>

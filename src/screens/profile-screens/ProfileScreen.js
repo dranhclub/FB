@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Dimensions } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
@@ -60,6 +60,8 @@ export default function ProfileScreen({navigation}) {
     {uri: 'https://picsum.photos/seed/examplePhoto9/200/200'},
   ]
 
+  const currentUser = useSelector(state => state.auth.currentUser);
+
   return(
     <ScrollView>
       <View style={styles.profileContainer}>
@@ -70,7 +72,7 @@ export default function ProfileScreen({navigation}) {
             <Image style={styles.avatarImage} source={avatar}></Image>
           </View>
           <View style={{justifyContent: 'space-around', flexDirection: 'row'}}>
-            <Text style={{fontSize: 25, fontWeight: 'bold'}}>Huy Hoàng</Text>
+            <Text style={{fontSize: 25, fontWeight: 'bold'}}>{currentUser.name}</Text>
           </View>
           {/* <View style={{ flexDirection: 'row', marginVertical: 10}}>
             <RoundedButton style={{flex: 1}} backgroundColor={'#2979FF'} content={'Thêm vào tin'}/>
@@ -148,7 +150,7 @@ export default function ProfileScreen({navigation}) {
       </View>
       {/* Walls */}
       <Post
-        displayName='Huy Hoàng'
+        displayName={currentUser.name}
         avatar={avatar}
         time='Vừa xong'
         key='postId1'
@@ -160,7 +162,7 @@ export default function ProfileScreen({navigation}) {
         numComments={5}
       />
       <Post
-        displayName='Huy Hoàng'
+        displayName={currentUser.name}
         avatar={avatar}
         time='Vừa xong'
         key='postId2'
@@ -173,7 +175,7 @@ export default function ProfileScreen({navigation}) {
         numComments={5}
       />
       <Post
-        displayName='Huy Hoàng'
+        displayName={currentUser.name}
         avatar={avatar}
         time='Vừa xong'
         key='postId3'
@@ -187,7 +189,7 @@ export default function ProfileScreen({navigation}) {
         numComments={5}
       />
       <Post
-        displayName='Huy Hoàng'
+        displayName={currentUser.name}
         avatar={avatar}
         time='Vừa xong'
         key='postId4'

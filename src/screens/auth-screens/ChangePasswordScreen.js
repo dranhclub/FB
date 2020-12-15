@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   StyleSheet,
@@ -6,20 +6,13 @@ import {
   View,
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {AuthContext, RegisterContext} from '../../contexts/MyContexts';
 import {WarningComponent} from './signIn/LoginScreen';
-import AsyncStorage from '@react-native-community/async-storage';
-import axios from 'axios';
-import {useDispatch} from 'react-redux';
-import {logoutRequest} from '../../slices/authSlice';
-const API_SERVER_URL = '';
+import {useDispatch, useSelector} from 'react-redux';
+import {changePasswordRequest} from '../../slices/authSlice';
 
-export default function ChangePasswordScreen({navigation}) {
+export default function ChangePasswordScreen({}) {
 
   const dispatch = useDispatch();
-  const signOut = () => {
-    dispatch(logoutRequest());
-  }
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = React.useState('');
@@ -28,7 +21,12 @@ export default function ChangePasswordScreen({navigation}) {
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [wrongVerifyPassword, setWrongVerifyPassword] = useState(false);
 
-  const {error, isLoading} = React.useContext(RegisterContext);
+  // const {error} = React.useContext(RegisterContext);
+  // TODO: checkout error response
+
+  const loading = useSelector(state => state.auth.loading);
+
+  const currentUser = useSelector(state => state.auth.currentUser);
 
   const onChangeOldPassword = (text) => {
     if (text !== '') {
@@ -52,48 +50,16 @@ export default function ChangePasswordScreen({navigation}) {
   };
 
   const changePassword = async () => {
-    // TODO: gọi API change password, nhận và xử lí response
-    let token = '';
-    try {
-      token = await AsyncStorage.getItem('userToken');
-    } catch (e) {
-      console.log('Restoring token failed');
-      console.log(e);
-    }
-    // Example:
-    console.log({
-      token,
+    dispatch(changePasswordRequest({
+      token: currentUser.token,
       password: oldPassword,
-      newPassword: newPassword,
-    });
-    axios
-      .post(API_SERVER_URL + 'change_password', {
-        token,
-        password: oldPassword,
-        newPassword: newPassword,
-      })
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.code == 1000) {
-          alert(response.data.message);
-          navigation.navigate('NewfeedScreen');
-        }
-        if (response.data.code == 1) {
-          alert(response.data.message);
-          signOut()
-        }
-        if (response.data.code == 0) {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      newPassword: newPassword
+    }));
   };
 
   return (
     <View style={styles.container}>
-      <Spinner visible={isLoading} />
+      <Spinner visible={loading} />
       <View style={styles.topWrapper}>
         <TextInput
           style={styles.textInput}
@@ -127,13 +93,13 @@ export default function ChangePasswordScreen({navigation}) {
           <WarningComponent text="Mật khẩu mới không khớp" />
         ) : null}
         <View style={{marginTop: 20}}>
-          {error === 'WRONG_PASSWORD' ? (
+          {/* {error === 'WRONG_PASSWORD' ? (
             <WarningComponent text="Mật khẩu cũ không đúng" />
           ) : error === 'NET_ERR' ? (
             <WarningComponent text="Lỗi kết nối" />
           ) : error === 'UNKNOWN' ? (
             <WarningComponent text="Lỗi không xác định" />
-          ) : null}
+          ) : null} */}
         </View>
         <Button
           color={'#2979FF'}
@@ -160,7 +126,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     flex: 1,
   },
   registerImg: {

@@ -122,6 +122,16 @@ export const logoutRequest = createAsyncThunk('auth/logoutRequest', async params
   }
 });
 
+export const changePasswordRequest = createAsyncThunk('auth/changePasswordRequest', async params => {
+  try {
+    const response = await authApi.changePassword(params);
+    // TODO: change password of current user in storage
+    return response;
+  } catch(error) {
+    console.log('Error at change password request');
+  }
+});
+
 export const removeAccountFromStorage = createAsyncThunk('auth/removeAccountFromStorage', async account => {
   try {
     const temp = await AsyncStorage.getItem('savedUsers');
@@ -291,9 +301,22 @@ const auth = createSlice({
       state.inApp = false;
       state.currentUser = null;
       if (action.payload.code === RES_CODE.OK) {
-
+        // TODO:
       } else {
+        // TODO:
+      }
+    },
 
+    /* Change password request */
+    [changePasswordRequest.pending]: (state) => {
+      state.loading = true;
+    }, 
+    [changePasswordRequest.fulfilled]: (state, action) => {
+      state.loading = false;
+      if (action.payload.code === RES_CODE.OK) {
+        // TODO:
+      } else {
+        // TODO:
       }
     },
 
