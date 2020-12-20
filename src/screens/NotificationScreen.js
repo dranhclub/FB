@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Button, Text, View,Image,TouchableOpacity, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import { Text, View,Image,TouchableOpacity, FlatList } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useNavigation } from '@react-navigation/native';
@@ -152,7 +152,7 @@ export default function NotificationScreen() {
         closeOnPressMask={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent"
+            backgroundColor: "rgba(52, 52, 52, 0.8)"
           },
           draggableIcon: {
             backgroundColor: "#000"

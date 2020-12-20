@@ -11,7 +11,7 @@ Xem hướng dẫn cài đặt theo mục `React Native CLI Quickstart` (không 
 
 ## Cách chạy ứng dụng:
 1. Clone project về
-2. Mở `cmd`, cd tới thư mục project, chạy lệnh `npm install`.
+2. Mở `cmd`, cd tới thư mục project, chạy lệnh `npm install` hoặc `yarn install`.
 
     Đôi khi cài đặt bị lỗi vì không đủ quyền truy cập. Khi đó chạy `PowerShell` với quyền admin thay vì `cmd`
 

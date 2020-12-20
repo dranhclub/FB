@@ -13,6 +13,8 @@ import FriendScreen from '../screens/friend-screens/FriendScreen';
 import ListFriendRequestsScreen from '../screens/friend-screens/ListFriendRequestsScreen';
 import ListFriendSuggestionsScreen from '../screens/friend-screens/ListFriendSuggestionsScreen';
 import EmotionScreen from '../screens/posts-screens/EmotionScreen';
+import ChatScreen from '../screens/chat-screens/ChatScreen';
+import MessengerScreen from '../screens/chat-screens/MessengerScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +33,8 @@ function MainStackNavigator() {
       <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Báo cáo' }} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ title: 'Chỉnh sửa trang cá nhân' }} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen name="MessengerScreen" component={MessengerScreen} options={{title: 'Messenger'}}/>
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
     </Stack.Navigator>
   );
 }

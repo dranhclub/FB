@@ -161,7 +161,7 @@ export default function Post({ displayName, avatar, time, text, photos, video, n
         closeOnPressMask={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent"
+            backgroundColor: "rgba(52, 52, 52, 0.8)"
           },
           draggableIcon: {
             backgroundColor: "#000"
