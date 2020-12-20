@@ -27,7 +27,14 @@ Heroku git: https://git.heroku.com/hidden-refuge-96933.git
 API URL: https://hidden-refuge-96933.herokuapp.com/  
 
 ## Các chức năng đã hoàn thiện
-- Đăng ký
-- Đăng nhập
-- Gửi lời mời kết bạn
-  + Bao gồm thông báo (push notification)
+- Đăng ký, đăng nhập, đăng xuất
+- Hiển thị danh sách bài viết, hiển thị hình ảnh, video
+- Đăng bài viết (bao gồm text, hình ảnh, video)
+- Kết bạn (hiển thị push notification)
+- Đổi mật khẩu
+
+  
+## Các chức năng chưa hoàn thiện (chỉ bao gồm giao diện)
+- Bình luận, bày tỏ cảm xúc, báo cáo bài viết, chỉnh sửa bài viết
+- Trang cá nhân, chỉnh sửa thông tin cá nhân
+- Tìm kiếm, thông báo, menu, bạn bè,…
