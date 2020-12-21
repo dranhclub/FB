@@ -286,7 +286,7 @@ const auth = createSlice({
         state.loggedIn = true;
         state.currentUser = response.data;
       } else if (response.code === RES_CODE.PHONE_NUMBER_UNMATCH || response.code === RES_CODE.WRONG_PASSWORD) {
-        state.signInError = { message: response.data.message };
+        state.signInError = { message: response.message };
       } else {
         throw "Unknown response code";
       }
