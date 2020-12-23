@@ -285,7 +285,7 @@ export default function ChatScreen({ route }) {
         message_id: '4',
         unread: '',
         sender: {
-          id: '0',
+          id: '1',
           username: 'Huy Hoang',
           avatar: 'https://scontent.fhan5-2.fna.fbcdn.net/v/t1.0-1/p100x100/127227977_1754123958085629_7758658555616206425_n.jpg?_nc_cat=102&ccb=2&_nc_sid=dbb9e7&_nc_ohc=PeUjqHMLE1wAX-O1V7Q&_nc_ht=scontent.fhan5-2.fna&tp=6&oh=1fbff597a26606978199ac6f83752474&oe=5FF6FA85',
         }
@@ -298,7 +298,7 @@ export default function ChatScreen({ route }) {
         message_id: '5',
         unread: '',
         sender: {
-          id: '1',
+          id: '0',
           username: 'Huy Hoang',
           avatar: 'https://scontent.fhan5-2.fna.fbcdn.net/v/t1.0-1/p100x100/127227977_1754123958085629_7758658555616206425_n.jpg?_nc_cat=102&ccb=2&_nc_sid=dbb9e7&_nc_ohc=PeUjqHMLE1wAX-O1V7Q&_nc_ht=scontent.fhan5-2.fna&tp=6&oh=1fbff597a26606978199ac6f83752474&oe=5FF6FA85',
         }
@@ -311,7 +311,7 @@ export default function ChatScreen({ route }) {
         message_id: '4',
         unread: '',
         sender: {
-          id: '0',
+          id: '1',
           username: 'Huy Hoang',
           avatar: 'https://scontent.fhan5-2.fna.fbcdn.net/v/t1.0-1/p100x100/127227977_1754123958085629_7758658555616206425_n.jpg?_nc_cat=102&ccb=2&_nc_sid=dbb9e7&_nc_ohc=PeUjqHMLE1wAX-O1V7Q&_nc_ht=scontent.fhan5-2.fna&tp=6&oh=1fbff597a26606978199ac6f83752474&oe=5FF6FA85',
         }
@@ -335,7 +335,6 @@ export default function ChatScreen({ route }) {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
             <TouchableOpacity>
-              {/* <Ionicons name={'phone-portrait'} size={27} color={'#0091EA'} /> */}
               <FontAwesome5 name={'phone-alt'} color={'#0091EA'} solid size={27}/>
             </TouchableOpacity>
             <TouchableOpacity >
@@ -350,12 +349,6 @@ export default function ChatScreen({ route }) {
       headerTintColor: '#0091EA'
     });
 
-    // dispatch(getConversationRequest({
-    //   token: tokenMain,
-    //   partner_id: partner_id,
-    //   index: '0',
-    //   count: '20'
-    // }));
   }, []);
 
   const [selectedId] = useState(null);
