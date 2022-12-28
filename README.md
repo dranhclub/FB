@@ -38,3 +38,6 @@ API URL: https://hidden-refuge-96933.herokuapp.com/
 - Bình luận, bày tỏ cảm xúc, báo cáo bài viết, chỉnh sửa bài viết
 - Trang cá nhân, chỉnh sửa thông tin cá nhân
 - Tìm kiếm, thông báo, menu, bạn bè,…
+
+## Screenshots
+- Check screenshots in docs/
